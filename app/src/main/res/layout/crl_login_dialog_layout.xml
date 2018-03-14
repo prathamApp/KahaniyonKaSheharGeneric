@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="500dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    android:background="@drawable/loginbackground"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <com.example.pefpr.kahaniyonkashehar.customData.TektonProTextview
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:text="Admin Login"
+        android:gravity="center"
+        android:textSize="30sp"/>
+
+    <com.an.customfontview.CustomEditText
+        android:id="@+id/d_uname_crl"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@android:color/transparent"
+        android:hint="User Name"
+        android:inputType=""
+        android:singleLine="true"
+        android:textSize="25sp"
+        app:editFontPath="fonts/tektonpro-bold.otf"/>
+
+    <com.an.customfontview.CustomEditText
+        android:id="@+id/d_password_crl"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_height="50dp"
+        android:background="@android:color/transparent"
+        android:hint="Password..."
+        android:inputType="textPassword"
+        android:singleLine="true"
+        android:textSize="25sp"
+        app:editFontPath="fonts/tektonpro-bold.otf"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <com.example.pefpr.kahaniyonkashehar.customData.TektonProButton
+            android:id="@+id/d_btn_login"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="10dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/browse_content_selector"
+            android:gravity="center"
+            android:text=" Login "
+            android:textSize="25sp"/>
+
+        <com.example.pefpr.kahaniyonkashehar.customData.TektonProButton
+            android:id="@+id/d_btn_cancle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="10dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/browse_content_selector"
+            android:gravity="center"
+            android:text=" Cancel "
+            android:textSize="25sp"
+            app:editFontPath="fonts/tektonpro-bold.otf"  />
+
+    </LinearLayout>
+
+</LinearLayout>

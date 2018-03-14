@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:weightSum="100"
+    tools:context=".contentplayer.WebViewActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:background="@color/colorPrimaryDark"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <com.example.pefpr.kahaniyonkashehar.customData.TektonProTextview
+                android:id="@+id/tv_gnamelbl"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Game Name : "
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="19sp"
+                android:textColor="#ffffff" />
+
+            <com.example.pefpr.kahaniyonkashehar.customData.TektonProTextview
+                android:id="@+id/tv_web_view_gname"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="19sp"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+
+        <com.example.pefpr.kahaniyonkashehar.customData.TektonProTextview
+            android:id="@+id/tv_web_view_sname"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Student Name"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="19sp"
+            android:textColor="#ffffff" />
+
+    </LinearLayout>
+
+    <WebView
+        android:id="@+id/loadPage"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="95"></WebView>
+
+</LinearLayout>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/kks_bg"
+    android:orientation="horizontal"
+    android:weightSum="100">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="30"></LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/login_layout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="40"
+        android:orientation="vertical"
+        android:weightSum="7">
+
+        <com.an.customfontview.CustomTextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="Add New Unit"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="40sp"
+            app:textFontPath="fonts/tektonpro-bold.otf" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/individualbackgroundsquarewhite">
+
+            <Spinner
+                android:id="@+id/sp_state"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="State..."
+                android:popupBackground="@drawable/roundedwhitebackground"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/individualbackgroundsquarewhite">
+
+            <Spinner
+                android:id="@+id/sp_block"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Block..."
+                android:popupBackground="@drawable/roundedwhitebackground" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/individualbackgroundsquarewhite">
+
+            <com.an.customfontview.CustomEditText
+                android:id="@+id/tv_village"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:hint="Village..."
+                android:inputType="textPersonName"
+                android:singleLine="true"
+                android:textSize="25sp"
+                android:tooltipText="Village Name"
+                app:editFontPath="fonts/tektonpro-bold.otf" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/individualbackgroundsquarewhite">
+
+            <com.an.customfontview.CustomEditText
+                android:id="@+id/tv_school"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:hint="School..."
+                android:inputType="textPersonName"
+                android:singleLine="true"
+                android:textSize="25sp"
+                android:tooltipText="School Name"
+                app:editFontPath="fonts/tektonpro-bold.otf" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/individualbackgroundsquarewhite">
+
+            <com.an.customfontview.CustomEditText
+                android:id="@+id/tv_unitname"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:hint="Unit Name..."
+                android:inputType="text"
+                android:maxLength="11"
+                android:singleLine="true"
+                android:textSize="25sp"
+                android:tooltipText="Unit Name"
+                app:editFontPath="fonts/tektonpro-bold.otf" />
+        </LinearLayout>
+
+        <com.example.pefpr.kahaniyonkashehar.customData.TektonProButton
+            android:id="@+id/btn_submitunit"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/buttonyellowcolor"
+            android:text="SUBMIT"
+            android:textSize="25sp"
+            app:btnFontPath="fonts/tektonpro-bold.otf" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="30"></LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#273b43</color>
+    <color name="colorPrimaryDark">#172328</color>
+    <color name="colorAccent">#fdca00</color>
+    <color name="colorButton">#fdca00</color>
+    <color name="colorButtonPressed">#e4b602</color>
+    <color name="colorBorderItem">#ac7300</color>
+    <color name="colorBackground">#7372b5</color>
+    <color name="viewBg">#f1f5f8</color>
+    <color name="viewTransparent">#c8ffffff</color>
+    <color name="storyCardTransparent">#7bffffff</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="album_title">#4c4c4c</color>
+</resources>

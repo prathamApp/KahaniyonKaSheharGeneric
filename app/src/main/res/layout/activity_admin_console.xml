@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/kks_bg"
+    android:orientation="vertical"
+    tools:context="com.example.pefpr.kahaniyonkashehar.activities.AdminConsole">
+
+    <LinearLayout
+        android:id="@+id/ll_admin_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="100"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="10"></LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/login_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="80">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical">
+
+                        <ImageButton
+                            android:id="@+id/btn_add_admin"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:layout_centerInParent="true"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/round_icon_selector"
+                            android:scaleType="center"
+                            app:srcCompat="@drawable/student_add" />
+
+                        <com.an.customfontview.CustomTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/btn_add_admin"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="Add New Admin"
+                            android:textColor="#000000"
+                            android:textSize="30sp"
+                            android:textStyle="bold"
+                            app:textFontPath="fonts/tektonpro-bold.otf" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical">
+
+                        <ImageButton
+                            android:id="@+id/btn_transfer_data"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:layout_centerInParent="true"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/round_icon_selector"
+                            android:scaleType="center"
+                            app:srcCompat="@drawable/ic_send_usage" />
+
+                        <com.an.customfontview.CustomTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/btn_transfer_data"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="Transfer Data"
+                            android:textColor="#000000"
+                            android:textSize="30sp"
+                            android:textStyle="bold"
+                            app:textFontPath="fonts/tektonpro-bold.otf" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical">
+
+                        <ImageButton
+                            android:id="@+id/btn_push_data"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:layout_centerInParent="true"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/round_icon_selector"
+                            android:scaleType="center"
+                            app:srcCompat="@drawable/ic_push_server" />
+
+                        <com.an.customfontview.CustomTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/btn_push_data"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="Push To Server"
+                            android:textColor="#000000"
+                            android:textSize="30sp"
+                            android:textStyle="bold"
+                            app:textFontPath="fonts/tektonpro-bold.otf" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical">
+
+                        <ImageButton
+                            android:id="@+id/btn_push_current"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:layout_centerInParent="true"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/round_icon_selector"
+                            android:scaleType="center"
+                            app:srcCompat="@drawable/ic_phonelink" />
+
+                        <com.an.customfontview.CustomTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/btn_push_current"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="Push Device Data"
+                            android:textColor="#000000"
+                            android:textSize="30sp"
+                            android:textStyle="bold"
+                            app:textFontPath="fonts/tektonpro-bold.otf" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="10"></LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_admin_addnew"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="100"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="30"></LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_adminform"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="40"
+            android:orientation="vertical"
+            android:weightSum="9">
+
+            <com.an.customfontview.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="Add New Admin"
+                android:textColor="@color/colorAccent"
+                android:textSize="40sp"
+                app:textFontPath="fonts/tektonpro-bold.otf" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/individualbackgroundsquarewhite">
+
+                <com.an.customfontview.CustomEditText
+                    android:id="@+id/et_crlFirstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:hint="First name ..."
+                    android:inputType="textPersonName"
+                    android:singleLine="true"
+                    android:textSize="25sp"
+                    android:tooltipText="First name"
+                    app:editFontPath="fonts/tektonpro-bold.otf" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/individualbackgroundsquarewhite">
+
+                <com.an.customfontview.CustomEditText
+                    android:id="@+id/et_crlLastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:hint="Last Name..."
+                    android:inputType="textPersonName"
+                    android:singleLine="true"
+                    android:textSize="25sp"
+                    android:tooltipText="Last Name"
+                    app:editFontPath="fonts/tektonpro-bold.otf" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/individualbackgroundsquarewhite">
+
+                <com.an.customfontview.CustomEditText
+                    android:id="@+id/et_crlMobNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:hint="Mobile number..."
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:singleLine="true"
+                    android:textSize="25sp"
+                    android:tooltipText="Mobile Number"
+                    app:editFontPath="fonts/tektonpro-bold.otf" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/individualbackgroundsquarewhite">
+
+                <com.an.customfontview.CustomEditText
+                    android:id="@+id/et_crlMailId"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:hint="Mail ID..."
+                    android:inputType="textEmailAddress"
+                    android:singleLine="true"
+                    android:textSize="25sp"
+                    android:tooltipText="Mail ID"
+                    app:editFontPath="fonts/tektonpro-bold.otf" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/individualbackgroundsquarewhite">
+
+                <com.an.customfontview.CustomEditText
+                    android:id="@+id/et_crlUserName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:hint="User Name..."
+                    android:inputType="text"
+                    android:maxLength="11"
+                    android:singleLine="true"
+                    android:textSize="25sp"
+                    android:tooltipText="User Name"
+                    app:editFontPath="fonts/tektonpro-bold.otf" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/individualbackgroundsquarewhite">
+
+                <com.an.customfontview.CustomEditText
+                    android:id="@+id/et_crlPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:hint="Password..."
+                    android:inputType="textPassword"
+                    android:maxLength="11"
+                    android:singleLine="true"
+                    android:textSize="25sp"
+                    android:tooltipText="Password"
+                    app:editFontPath="fonts/tektonpro-bold.otf" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/individualbackgroundsquarewhite">
+
+                <Spinner
+                    android:id="@+id/sp_crlState"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="States..."
+                    android:popupBackground="@drawable/roundedwhitebackground"
+                    android:textSize="30sp" />
+            </LinearLayout>
+
+            <com.example.pefpr.kahaniyonkashehar.customData.TektonProButton
+                android:id="@+id/btn_ac_submitunit"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/buttonyellowcolor"
+                android:text="SUBMIT"
+                android:textSize="25sp"
+                app:btnFontPath="fonts/tektonpro-bold.otf" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="30"></LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:rsv="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:weightSum="10"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    tools:layout_editor_absoluteY="89dp">
+
+    <LinearLayout
+        android:id="@+id/ll_linear2"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.5"
+        android:orientation="vertical"
+        android:weightSum="10"
+        android:layout_alignParentTop="true">
+
+        <ImageView
+            android:id="@+id/btn_repeat_question_i"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_weight="2"
+            android:src="@drawable/question_mark_round" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_weight="8">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.example.pefpr.kahaniyonkashehar.phasedseekbar.PhasedSeekBar
+                    android:id="@+id/psb_star"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    app:phased_anchor_height="40dp"
+                    app:phased_anchor_width="40dp"
+                    app:phased_base_background="@drawable/bg_starbar"
+                    app:phased_base_margin_bottom="10dp"
+                    app:phased_base_margin_left="30dp"
+                    app:phased_base_margin_right="30dp"
+                    app:phased_base_margin_top="10dp"
+                    app:phased_draw_on_off="false"
+                    app:phased_fix_point="true"
+                    app:phased_item_height="80dp"
+                    app:phased_item_width="80dp"
+                    app:phased_mode="vertical"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="8.5"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:id="@+id/linear1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_image1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="25dp"
+                android:layout_weight=".5"
+                android:scaleType="centerInside"
+                android:src="@drawable/bookclosednew" />
+
+            <ImageView
+                android:id="@+id/iv_image2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="25dp"
+                android:layout_weight=".5"
+                android:scaleType="centerInside"
+                android:src="@drawable/bookclosednew" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_image3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="25dp"
+                android:layout_weight=".5"
+                android:scaleType="centerInside"
+                android:src="@drawable/bookclosednew" />
+
+            <ImageView
+                android:id="@+id/iv_image4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="25dp"
+                android:layout_weight=".5"
+                android:scaleType="centerInside"
+                android:src="@drawable/bookclosednew" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

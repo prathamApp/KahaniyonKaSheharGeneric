@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="400dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/glass_square"
+    android:gravity="center"
+    android:paddingTop="15dp"
+    android:paddingBottom="20dp"
+    android:orientation="vertical">
+
+    <com.example.pefpr.kahaniyonkashehar.customData.TektonProTextview
+        android:id="@+id/cd_tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="30sp"/>
+
+    <Spinner
+        android:id="@+id/cd_sp_todaysletters"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:popupBackground="@drawable/roundedwhitebackground"/>
+
+    <com.example.pefpr.kahaniyonkashehar.customData.TektonProButton
+        android:id="@+id/cd_btn_ok"
+        android:layout_width="200px"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/browse_content_selector"
+        android:gravity="center"
+        android:text=" OK "
+        android:textSize="25sp" />
+
+</LinearLayout>

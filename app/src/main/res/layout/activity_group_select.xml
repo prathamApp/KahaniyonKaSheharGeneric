@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="5dp"
+    android:background="@drawable/kks_bg"
+    android:weightSum="10"
+    tools:context="com.example.pefpr.kahaniyonkashehar.activities.ContentDisplay">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.5">
+
+        <com.example.pefpr.kahaniyonkashehar.customData.TektonProTextview
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Learning Content"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:background="@drawable/loginbackground"
+            android:textColor="@color/colorAccent"
+            app:textFontPath="fonts/tektonpro-bold.otf"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8.5">
+
+        <include layout="@layout/attendence_recycler" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

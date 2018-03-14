@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/kks_bg"
+    android:orientation="vertical"
+    android:paddingBottom="5dp"
+    android:weightSum="10"
+    tools:context="com.example.pefpr.kahaniyonkashehar.activities.ContentDisplay">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.5"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@drawable/backgroundsquarewhite"
+        android:orientation="horizontal"
+        android:weightSum="6">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"></LinearLayout>
+
+        <com.example.pefpr.kahaniyonkashehar.customData.TektonProTextview
+            android:id="@+id/tv_pg_title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="Select Story"
+            android:textSize="40sp"
+            android:layout_weight="4"
+            app:textFontPath="fonts/tektonpro-bold.otf" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+            <com.example.pefpr.kahaniyonkashehar.customData.TektonProTextview
+                android:id="@+id/tv_todaysletters"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:popupBackground="@drawable/roundedwhitebackground"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_weight="8.5">
+
+        <include layout="@layout/attendence_recycler" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -133,6 +133,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 CrlDBHelper crlDBHelper;
                 crlDBHelper = new CrlDBHelper(myContext);
                 try {
+
                     Crl crl = new Crl();
                     crl.setCRLId("admin_crl");
                     crl.setEmail("admin@admin");
@@ -291,7 +292,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         while ((length = myInput.read(buffer)) > 0) {
             myOutput.write(buffer, 0, length);
         }
-
         //Close the streams
         myOutput.flush();
         myOutput.close();

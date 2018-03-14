@@ -19,6 +19,7 @@ import com.example.pefpr.kahaniyonkashehar.R;
 import com.example.pefpr.kahaniyonkashehar.activities.AdminConsole;
 import com.example.pefpr.kahaniyonkashehar.activities.GamesDisplay;
 import com.example.pefpr.kahaniyonkashehar.activities.RegistrationForm;
+import com.example.pefpr.kahaniyonkashehar.activities.TabUsage;
 import com.example.pefpr.kahaniyonkashehar.contentplayer.WebViewActivity;
 import com.example.pefpr.kahaniyonkashehar.interfaces.ViewPagerFragmentReloaded;
 import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.CrlDBHelper;
@@ -112,7 +113,7 @@ public class FragmentModules extends Fragment implements ViewPagerFragmentReload
 
     @OnClick(R.id.btn_add_student)
     public void startLearningModule() {
-        Intent main = new Intent(getActivity(), RegistrationForm.class);
+        Intent main = new Intent(getActivity(), TabUsage.class);
         startActivity(main);
     }
 

@@ -74,6 +74,7 @@ public class SplashActivity extends ActivityManagePermission implements Permissi
             }
         });
 
+        startUpProcess();
     }
 
     public String fetchStory(String jasonName) {
@@ -120,8 +121,8 @@ public class SplashActivity extends ActivityManagePermission implements Permissi
         }
     }
 
-    @Override
-    public void permissionGranted() {
+    public void startUpProcess(){
+
         intiateDatabase();
 
         File file = new File(Environment.getExternalStorageDirectory().toString() + "/.KKSInternal");
@@ -170,6 +171,11 @@ public class SplashActivity extends ActivityManagePermission implements Permissi
         statusDBHelper.Update("AppLang", kksLang);
         BackupDatabase.backup(SplashActivity.this);
 
+    }
+
+    @Override
+    public void permissionGranted() {
+        startUpProcess();
     }
 
     @Override

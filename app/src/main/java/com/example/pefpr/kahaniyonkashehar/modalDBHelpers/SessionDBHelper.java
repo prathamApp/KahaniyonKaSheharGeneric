@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.pefpr.kahaniyonkashehar.database.DataBaseHelper;
 import com.example.pefpr.kahaniyonkashehar.modalclasses.KksSession;
@@ -71,8 +72,15 @@ public class SessionDBHelper extends DataBaseHelper {
 
     public void getStudentUsageData(){
         sessionDbObject = getWritableDatabase();
-        Cursor cursor = sessionDbObject.rawQuery("select a.StudentID , b.SessionID , b.fromDate, b.toDate from " + TABLENAME + "", null);
+        Cursor cursor = sessionDbObject.rawQuery("select FirstName,diff from Student x INNER JOIN(select StudentID,sum(seconds) as diff from(select b.StudentID, (strftime('%s',(substr(toDate, 7, 4)||'-'||substr(toDate, 4,2)||'-'||substr(toDate, 1,2)||' '||substr(toDate,11) )) - strftime('%s',(substr(fromDate, 7, 4)||'-'||substr(fromDate, 4,2)||'-'||substr(fromDate, 1,2)||' '||substr(fromDate,11)))) as seconds from Session a left outer join Attendance b on a.SessionID = b.SessionID) group by StudentID) y on x.StudentID = y.StudentID order by diff desc", null);
+        cursor.moveToFirst();
 
+        while(!cursor.isAfterLast()){
+            Log.d("UsageData :::::", "FirstName: "+cursor.getString(cursor.getColumnIndex("FirstName"))+
+                    "  diff: "+cursor.getString(cursor.getColumnIndex("diff"))
+            );
+            cursor.moveToNext();
+        }
     }
 
     private List<KksSession> _PopulateListFromCursor(Cursor cursor) {

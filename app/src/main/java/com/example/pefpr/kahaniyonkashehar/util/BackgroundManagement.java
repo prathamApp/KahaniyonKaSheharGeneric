@@ -59,9 +59,12 @@ public class BackgroundManagement extends Activity{
     }
 
     public void ActivityResumed() {
+        if(setTimer) {
             setTimer = false;
             cd.cancel();
             duration = timeout;
+            Log.d("APP_END", "onFinish: duration: "+duration);
+        }
         Log.d("APP_END", "onFinish: duration: "+duration);
 
     }

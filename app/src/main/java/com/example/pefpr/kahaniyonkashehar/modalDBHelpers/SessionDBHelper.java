@@ -8,7 +8,8 @@ import android.util.Log;
 
 import com.example.pefpr.kahaniyonkashehar.database.DataBaseHelper;
 import com.example.pefpr.kahaniyonkashehar.modalclasses.KksSession;
-import com.example.pefpr.kahaniyonkashehar.modalclasses.Score;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,33 @@ public class SessionDBHelper extends DataBaseHelper {
     }
 
     public boolean UpdateToDate(String SessionID, String toDate) {
+        String restrue = "f";
+        try {
+            Cursor cursor= sessionDbObject.rawQuery("select fromDate from " + TABLENAME + " where SessionID = ? ", new String[]{SessionID});
+            cursor.moveToFirst();
+
+            String fromDate = cursor.getString(cursor.getColumnIndex("fromDate"));
+            Log.d("fromDate", "UpdateToDate: "+fromDate);
+
+            if (fromDate.equalsIgnoreCase("na")) {
+                cursor = sessionDbObject.rawQuery("UPDATE " + TABLENAME + " SET toDate = ? where SessionID = ? ", new String[]{toDate, SessionID});
+                cursor.moveToFirst();
+                if (cursor.getCount() >= 0)
+                    restrue = "t";
+                else
+                    restrue = "f";
+            }
+            if (restrue.equalsIgnoreCase("t"))
+                return true;
+            else
+                return false;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+/*    public boolean checkUpdatedDate(String SessionID, String toDate) {
         try {
             Cursor cursor = sessionDbObject.rawQuery("UPDATE " + TABLENAME + " SET toDate = ? where SessionID = ? ", new String[]{toDate, SessionID});
             cursor.moveToFirst();
@@ -45,7 +73,7 @@ public class SessionDBHelper extends DataBaseHelper {
             ex.printStackTrace();
             return false;
         }
-    }
+    }*/
 
     public boolean addToSessionTable(String SessionID, String fromDate, String toDate) {
         try {
@@ -70,17 +98,26 @@ public class SessionDBHelper extends DataBaseHelper {
         }
     }
 
-    public void getStudentUsageData(){
+    public ArrayList<JSONObject> getStudentUsageData() {
         sessionDbObject = getWritableDatabase();
-        Cursor cursor = sessionDbObject.rawQuery("select FirstName,diff from Student x INNER JOIN(select StudentID,sum(seconds) as diff from(select b.StudentID, (strftime('%s',(substr(toDate, 7, 4)||'-'||substr(toDate, 4,2)||'-'||substr(toDate, 1,2)||' '||substr(toDate,11) )) - strftime('%s',(substr(fromDate, 7, 4)||'-'||substr(fromDate, 4,2)||'-'||substr(fromDate, 1,2)||' '||substr(fromDate,11)))) as seconds from Session a left outer join Attendance b on a.SessionID = b.SessionID) group by StudentID) y on x.StudentID = y.StudentID order by diff desc", null);
+        Cursor cursor = sessionDbObject.rawQuery("select FirstName,time from Student x INNER JOIN(select StudentID,sum(seconds) as time from(select b.StudentID, (strftime('%s',(substr(toDate, 7, 4)||'-'||substr(toDate, 4,2)||'-'||substr(toDate, 1,2)||' '||substr(toDate,11) )) - strftime('%s',(substr(fromDate, 7, 4)||'-'||substr(fromDate, 4,2)||'-'||substr(fromDate, 1,2)||' '||substr(fromDate,11)))) as seconds from Session a left outer join Attendance b on a.SessionID = b.SessionID) group by StudentID) y on x.StudentID = y.StudentID order by time desc", null);
         cursor.moveToFirst();
+        ArrayList<JSONObject> allUsageData = new ArrayList<JSONObject>();
+        JSONObject studentData = null;
 
-        while(!cursor.isAfterLast()){
-            Log.d("UsageData :::::", "FirstName: "+cursor.getString(cursor.getColumnIndex("FirstName"))+
-                    "  diff: "+cursor.getString(cursor.getColumnIndex("diff"))
-            );
-            cursor.moveToNext();
+        try {
+            while (!cursor.isAfterLast()) {
+                studentData = new JSONObject();
+                studentData.put("FirstName", cursor.getString(cursor.getColumnIndex("FirstName")));
+                studentData.put("time", cursor.getString(cursor.getColumnIndex("time")));
+                allUsageData.add(studentData);
+                cursor.moveToNext();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+        return allUsageData;
     }
 
     private List<KksSession> _PopulateListFromCursor(Cursor cursor) {

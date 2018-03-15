@@ -206,7 +206,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 student.setFirstName(studentsJsonObject.getString("FirstName"));
                 student.setMiddleName(studentsJsonObject.getString("MiddleName"));
                 student.setLastName(studentsJsonObject.getString("LastName"));
-                student.setRegDate(KksApplication.getCurrentDate());
+                student.setRegDate(""+KksApplication.getCurrentDate());
                 student.setGender(studentsJsonObject.getString("Gender"));
                 student.setAge(studentsJsonObject.getInt("Age"));
                 student.setDeviceId(statusDBHelper.getValue("DeviceID"));

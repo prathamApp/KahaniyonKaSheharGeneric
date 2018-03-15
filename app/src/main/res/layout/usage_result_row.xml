@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:orientation="horizontal"
+    android:weightSum="10">
+
+
+    <ImageView
+        android:id="@+id/resultavatarImg"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:layout_gravity="center"
+        android:src="@drawable/avatarmale"/>
+
+    <TextView
+        android:id="@+id/studentName"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="4"
+        android:gravity="center"
+        android:text="Resource Name"
+        android:textColor="#212121"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/usageTime"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="4"
+        android:layout_marginLeft="10dp"
+        android:gravity="center"
+        android:text="00h : 00m : 00s"
+        android:textColor="#212121"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
+</LinearLayout>

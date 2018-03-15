@@ -161,7 +161,8 @@ public class SplashActivity extends ActivityManagePermission implements Permissi
             if (new File(final_sd_path + "/.KKSGames").exists()) {
                 statusDBHelper.Update("SdCardPath", path);
                 sdCardPathString = path + "/.KKSGames";
-                new DataBaseHelper(this).insertDataFromStudentJSON();
+                if(!inserted.equalsIgnoreCase("y"))
+                    new DataBaseHelper(this).insertDataFromStudentJSON();
                 break;
             }
         }

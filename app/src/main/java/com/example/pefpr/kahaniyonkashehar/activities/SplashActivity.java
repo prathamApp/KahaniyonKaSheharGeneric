@@ -3,6 +3,7 @@ package com.example.pefpr.kahaniyonkashehar.activities;
 import android.content.Intent;
 import android.database.SQLException;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -16,7 +17,7 @@ import com.example.pefpr.kahaniyonkashehar.database.DataBaseHelper;
 import com.example.pefpr.kahaniyonkashehar.interfaces.PermissionResult;
 import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.StatusDBHelper;
 import com.example.pefpr.kahaniyonkashehar.services.AppExitService;
-import com.example.pefpr.kahaniyonkashehar.util.ActivityManagePermission;
+import com.example.pefpr.kahaniyonkashehar.util.BaseActivity;
 import com.example.pefpr.kahaniyonkashehar.util.PermissionUtils;
 import com.example.pefpr.kahaniyonkashehar.util.SDCardUtil;
 
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SplashActivity extends ActivityManagePermission implements PermissionResult {
+public class SplashActivity extends BaseActivity implements PermissionResult {
 
     @BindView(R.id.start_app)
     TextView startApp;
@@ -53,13 +54,14 @@ public class SplashActivity extends ActivityManagePermission implements Permissi
         startService(new Intent(this, AppExitService.class));
 
         String[] permissionArray = new String[]{PermissionUtils.Manifest_CAMERA,
-                PermissionUtils.Manifest_READ_EXTERNAL_STORAGE,
+//                PermissionUtils.Manifest_READ_EXTERNAL_STORAGE,
                 PermissionUtils.Manifest_WRITE_EXTERNAL_STORAGE,
                 PermissionUtils.Manifest_RECORD_AUDIO,
-                PermissionUtils.Manifest_BLUETOOTH,
-                PermissionUtils.Manifest_BLUETOOTH_ADMIN,
+/*                PermissionUtils.Manifest_BLUETOOTH,
+                PermissionUtils.Manifest_BLUETOOTH_ADMIN,*/
                 PermissionUtils.Manifest_ACCESS_COARSE_LOCATION,
-                PermissionUtils.Manifest_ACCESS_FINE_LOCATION};
+//                PermissionUtils.Manifest_ACCESS_FINE_LOCATION
+        };
 
         if (!isPermissionsGranted(SplashActivity.this, permissionArray)) {
             askCompactPermissions(permissionArray, this);
@@ -74,7 +76,9 @@ public class SplashActivity extends ActivityManagePermission implements Permissi
             }
         });
 
-        startUpProcess();
+        if (!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
+            startUpProcess();
+        }
     }
 
     public String fetchStory(String jasonName) {
@@ -121,61 +125,66 @@ public class SplashActivity extends ActivityManagePermission implements Permissi
         }
     }
 
-    public void startUpProcess(){
+    public void startUpProcess() {
 
-        intiateDatabase();
+        try {
+            intiateDatabase();
 
-        File file = new File(Environment.getExternalStorageDirectory().toString() + "/.KKSInternal");
-        if (!file.exists())
-            file.mkdir();
+            File file = new File(Environment.getExternalStorageDirectory().toString() + "/.KKSInternal");
+            if (!file.exists())
+                file.mkdir();
 
-        file = new File(Environment.getExternalStorageDirectory().toString() + "/.KKSInternal/UsageJsons");
-        if (!file.exists())
-            file.mkdir();
+            file = new File(Environment.getExternalStorageDirectory().toString() + "/.KKSInternal/UsageJsons");
+            if (!file.exists())
+                file.mkdir();
 
-        file = new File(Environment.getExternalStorageDirectory().toString() + "/.KKSInternal/SelfUsageJsons");
-        if (!file.exists())
-            file.mkdir();
+            file = new File(Environment.getExternalStorageDirectory().toString() + "/.KKSInternal/SelfUsageJsons");
+            if (!file.exists())
+                file.mkdir();
 
-        file = new File(Environment.getExternalStorageDirectory().toString() + "/.KKSInternal/JsonsBackup");
-        if (!file.exists())
-            file.mkdir();
+            file = new File(Environment.getExternalStorageDirectory().toString() + "/.KKSInternal/JsonsBackup");
+            if (!file.exists())
+                file.mkdir();
 
-        file = new File(Environment.getExternalStorageDirectory().toString() + "/.KKSInternal/Recordings");
-        if (!file.exists())
-            file.mkdir();
-        BackupDatabase.backup(SplashActivity.this);
+            file = new File(Environment.getExternalStorageDirectory().toString() + "/.KKSInternal/Recordings");
+            if (!file.exists())
+                file.mkdir();
+            BackupDatabase.backup(SplashActivity.this);
 
-        statusDBHelper = new StatusDBHelper(SplashActivity.this);
-        String extSdPath = statusDBHelper.getValue("SdCardPath");
-        Log.d("extSdPath", "permissionGranted: "+extSdPath);
-        if (new File(extSdPath.toString() + "/.KKSGames").exists()) {
-            startApp.setVisibility(View.VISIBLE);
-        }
-
-        String inserted = statusDBHelper.getValue("insertedStudents");
-
-        ArrayList<String> sdcard_path = SDCardUtil.getExtSdCardPaths(SplashActivity.this);
-        for (String path : sdcard_path) {
-            final_sd_path = path;
-            if (new File(final_sd_path + "/.KKSGames").exists()) {
-                statusDBHelper.Update("SdCardPath", path);
-                sdCardPathString = path + "/.KKSGames";
-                if(!inserted.equalsIgnoreCase("y"))
-                    new DataBaseHelper(this).insertDataFromStudentJSON();
-                break;
+            statusDBHelper = new StatusDBHelper(SplashActivity.this);
+            String extSdPath = statusDBHelper.getValue("SdCardPath");
+            Log.d("extSdPath", "permissionGranted: " + extSdPath);
+            if (new File(extSdPath.toString() + "/.KKSGames").exists()) {
+                startApp.setVisibility(View.VISIBLE);
             }
+
+            String inserted = statusDBHelper.getValue("insertedStudents");
+
+            ArrayList<String> sdcard_path = SDCardUtil.getExtSdCardPaths(SplashActivity.this);
+            for (String path : sdcard_path) {
+                final_sd_path = path;
+                if (new File(final_sd_path + "/.KKSGames").exists()) {
+                    statusDBHelper.Update("SdCardPath", path);
+                    sdCardPathString = path + "/.KKSGames";
+                    if (!inserted.equalsIgnoreCase("y"))
+                        new DataBaseHelper(this).insertDataFromStudentJSON();
+                    break;
+                }
+            }
+
+            String kksLang = fetchStory("Stories");
+            Log.d("LanguageJson", "onCreate: " + kksLang);
+            statusDBHelper.Update("AppLang", kksLang);
+            BackupDatabase.backup(SplashActivity.this);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        String kksLang = fetchStory("Stories");
-        Log.d("LanguageJson", "onCreate: " + kksLang);
-        statusDBHelper.Update("AppLang", kksLang);
-        BackupDatabase.backup(SplashActivity.this);
-
     }
 
     @Override
     public void permissionGranted() {
+        Log.d("permission", "permissionGranted: ");
         startUpProcess();
     }
 

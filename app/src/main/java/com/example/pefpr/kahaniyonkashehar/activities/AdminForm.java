@@ -17,6 +17,7 @@ import com.example.pefpr.kahaniyonkashehar.database.BackupDatabase;
 import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.CrlDBHelper;
 import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.VillageDBHelper;
 import com.example.pefpr.kahaniyonkashehar.modalclasses.Crl;
+import com.example.pefpr.kahaniyonkashehar.util.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AdminForm extends AppCompatActivity {
+public class AdminForm extends BaseActivity {
 
     @BindView(R.id.login_layout)
     LinearLayout login_layout;

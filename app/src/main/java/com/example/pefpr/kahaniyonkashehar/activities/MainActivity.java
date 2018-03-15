@@ -1,45 +1,28 @@
 package com.example.pefpr.kahaniyonkashehar.activities;
 
-import android.database.SQLException;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.an.customfontview.CustomButton;
 import com.example.pefpr.kahaniyonkashehar.R;
-import com.example.pefpr.kahaniyonkashehar.adapters.AttendenceAdapter;
 import com.example.pefpr.kahaniyonkashehar.adapters.ViewPagerAdapter;
 import com.example.pefpr.kahaniyonkashehar.database.BackupDatabase;
-import com.example.pefpr.kahaniyonkashehar.database.DataBaseHelper;
-import com.example.pefpr.kahaniyonkashehar.fragments.AttendanceFragment;
-import com.example.pefpr.kahaniyonkashehar.fragments.FragmentAddStudent;
-import com.example.pefpr.kahaniyonkashehar.fragments.FragmentLogin;
 import com.example.pefpr.kahaniyonkashehar.fragments.FragmentModules;
 import com.example.pefpr.kahaniyonkashehar.fragments.FragmentQRScan;
-import com.example.pefpr.kahaniyonkashehar.fragments.FragmentSplash;
 import com.example.pefpr.kahaniyonkashehar.interfaces.ViewPagerFragmentReloaded;
-import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.StatusDBHelper;
-import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.StudentDBHelper;
-import com.example.pefpr.kahaniyonkashehar.util.BackgroundManagement;
-
-import java.io.IOException;
+import com.example.pefpr.kahaniyonkashehar.util.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     //This is our viewPager
     @BindView(R.id.viewpager)
@@ -54,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     FragmentQRScan fragmentQRScan;
     CustomButton customButton;
     ViewPagerAdapter adapter;
-    BackgroundManagement backgroundManagement;
 
 
     @Override
@@ -69,10 +51,6 @@ public class MainActivity extends AppCompatActivity {
         //Initializing the tablayout
         tabLayout.setupWithViewPager(viewPager);
         changeTabsFont();
-
-        backgroundManagement = new BackgroundManagement(this);
-
-
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -133,6 +111,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        Log.d("MAIN:::::", "onResume: IN MAIN ACTIVITY");
+        super.onPause();
+    }
+
+    @Override
     public void onBackPressed() {
 
         FragmentModules myFragment = (FragmentModules) getSupportFragmentManager().findFragmentByTag(FragmentModules.class.getSimpleName());
@@ -144,15 +128,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        backgroundManagement.ActivityOnPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        backgroundManagement.ActivityResumed();
-    }
 }

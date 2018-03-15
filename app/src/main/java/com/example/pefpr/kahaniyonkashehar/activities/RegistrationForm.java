@@ -22,13 +22,14 @@ import com.example.pefpr.kahaniyonkashehar.fragments.DatePickerFragment;
 import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.AserDBHelper;
 import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.StudentDBHelper;
 import com.example.pefpr.kahaniyonkashehar.modalclasses.Student;
+import com.example.pefpr.kahaniyonkashehar.util.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.example.pefpr.kahaniyonkashehar.KksApplication.getCurrentDate;
 
-public class RegistrationForm extends AppCompatActivity {
+public class RegistrationForm extends BaseActivity {
 
     //    @BindView(R.id.sp_unit)
 //    Spinner sp_unit;

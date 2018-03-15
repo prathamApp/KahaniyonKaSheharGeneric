@@ -22,11 +22,12 @@ import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.StudentDBHelper;
 import com.example.pefpr.kahaniyonkashehar.modalclasses.AttendenceView;
 import com.example.pefpr.kahaniyonkashehar.modalclasses.Group;
 import com.example.pefpr.kahaniyonkashehar.modalclasses.StudentList;
+import com.example.pefpr.kahaniyonkashehar.util.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AttendenceDisplay extends AppCompatActivity implements ItemClicked {
+public class AttendenceDisplay extends BaseActivity implements ItemClicked {
 
     public static String currentStudentId;
     boolean studentsShownflag = false;

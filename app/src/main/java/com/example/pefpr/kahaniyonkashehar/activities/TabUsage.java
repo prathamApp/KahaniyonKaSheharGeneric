@@ -12,12 +12,13 @@ import com.example.pefpr.kahaniyonkashehar.contentplayer.SdCardPath;
 import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.AttendanceDBHelper;
 import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.SessionDBHelper;
 import com.example.pefpr.kahaniyonkashehar.modalclasses.Usage;
+import com.example.pefpr.kahaniyonkashehar.util.BaseActivity;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class TabUsage extends AppCompatActivity {
+public class TabUsage extends BaseActivity {
 
     SessionDBHelper sessionDBHelper;
     AttendanceDBHelper attendanceDBHelper;

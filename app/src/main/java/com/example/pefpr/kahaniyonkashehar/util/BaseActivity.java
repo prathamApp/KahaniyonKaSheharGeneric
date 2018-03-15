@@ -6,22 +6,31 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
+import com.example.pefpr.kahaniyonkashehar.KksApplication;
+import com.example.pefpr.kahaniyonkashehar.database.BackupDatabase;
 import com.example.pefpr.kahaniyonkashehar.interfaces.PermissionResult;
+import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.SessionDBHelper;
+import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.StatusDBHelper;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by HP on 31-12-2016.
+ * Created by Ameya on 15-Mar-18.
  */
 
-@SuppressWarnings({"MissingPermission"})
-public class ActivityManagePermission extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity{
+    static CountDownTimer cd;
+    static Long timeout = (long) 2000 * 60;
+    static Long duration = timeout;
+    static Boolean setTimer=false;
 
 
     private final int KEY_PERMISSION = 200;
@@ -69,7 +78,7 @@ public class ActivityManagePermission extends AppCompatActivity {
         ArrayList<String> permissionsNotGranted = new ArrayList<>();
 
         for (int i = 0; i < permissionAsk.length; i++) {
-            if (!isPermissionGranted(ActivityManagePermission.this, permissionAsk[i])) {
+            if (!isPermissionGranted(BaseActivity.this, permissionAsk[i])) {
                 permissionsNotGranted.add(permissionAsk[i]);
             }
         }
@@ -84,7 +93,7 @@ public class ActivityManagePermission extends AppCompatActivity {
 
             arrayPermissionNotGranted = new String[permissionsNotGranted.size()];
             arrayPermissionNotGranted = permissionsNotGranted.toArray(arrayPermissionNotGranted);
-            ActivityCompat.requestPermissions(ActivityManagePermission.this, arrayPermissionNotGranted, KEY_PERMISSION);
+            ActivityCompat.requestPermissions(BaseActivity.this, arrayPermissionNotGranted, KEY_PERMISSION);
 
         }
 
@@ -162,4 +171,60 @@ public class ActivityManagePermission extends AppCompatActivity {
 
     }
 
+    public void ActivityOnPause() {
+
+        setTimer = true;
+        Log.d("APP_END", "onFinish: Startd the App: "+duration);
+        Log.d("APP_END", "onFinish: Startd the App: "+KksApplication.getCurrentDateTime());
+
+        cd = new CountDownTimer(duration, 1000) {
+            //cd = new CountDownTimer(duration, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                duration = millisUntilFinished;
+            }
+
+            @Override
+            public void onFinish() {
+                try {
+                    Log.d("APP_END", "onFinish: Ended the App: "+KksApplication.getCurrentDateTime());
+
+                    StatusDBHelper statusDBHelper = new StatusDBHelper(BaseActivity.this);
+                    SessionDBHelper sessionDBHelper = new SessionDBHelper(BaseActivity.this);
+
+                    String curSession = statusDBHelper.getValue("CurrentSession");
+                    Log.d("APP_END", "onFinish: Current Session: "+curSession);
+                    Boolean temp = sessionDBHelper.UpdateToDate("" + curSession, KksApplication.getCurrentDateTime());
+                    if(temp)
+                        Log.d("APP_END", "onFinish: SUCCESS");
+                    BackupDatabase.backup(BaseActivity.this);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+
+    public void ActivityResumed() {
+        if(setTimer) {
+            setTimer = false;
+            cd.cancel();
+            duration = timeout;
+            Log.d("APP_END", "ActivityResumed: in IF: "+duration);
+        }
+        Log.d("APP_END", "ActivityResumed: duration: "+duration);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ActivityOnPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ActivityResumed();
+    }
 }

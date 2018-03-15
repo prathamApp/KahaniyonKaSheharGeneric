@@ -47,6 +47,7 @@ import com.example.pefpr.kahaniyonkashehar.modalclasses.Level;
 import com.example.pefpr.kahaniyonkashehar.modalclasses.Score;
 import com.example.pefpr.kahaniyonkashehar.modalclasses.Student;
 import com.example.pefpr.kahaniyonkashehar.syncoperations.SyncUtility;
+import com.example.pefpr.kahaniyonkashehar.util.BaseActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,7 +67,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AdminConsole extends AppCompatActivity {
+public class AdminConsole extends BaseActivity {
 
     @BindView(R.id.ll_admin_menu)
     LinearLayout ll_admin_menu;

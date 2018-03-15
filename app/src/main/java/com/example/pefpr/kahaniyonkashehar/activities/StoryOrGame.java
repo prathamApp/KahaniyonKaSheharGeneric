@@ -1,36 +1,28 @@
 package com.example.pefpr.kahaniyonkashehar.activities;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.badoo.mobile.util.WeakHandler;
 import com.example.pefpr.kahaniyonkashehar.KksApplication;
 import com.example.pefpr.kahaniyonkashehar.R;
 import com.example.pefpr.kahaniyonkashehar.contentplayer.TextToSpeechCustom;
 import com.example.pefpr.kahaniyonkashehar.database.BackupDatabase;
 import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.SessionDBHelper;
 import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.StatusDBHelper;
-import com.example.pefpr.kahaniyonkashehar.util.BackgroundManagement;
-import com.example.pefpr.kahaniyonkashehar.util.SDCardUtil;
+import com.example.pefpr.kahaniyonkashehar.util.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class StoryOrGame extends AppCompatActivity {
+public class StoryOrGame extends BaseActivity {
 
     String StudentName = "";
     TextToSpeechCustom tts;
     @BindView(R.id.tv_welcomeStudent)
     TextView welcomeStudent;
-    BackgroundManagement backgroundManagement;
     //    @BindView(R.id.btn_story)
 //    ImageButton btn_story;
 //    @BindView(R.id.btn_game)
@@ -45,7 +37,6 @@ public class StoryOrGame extends AppCompatActivity {
         ButterKnife.bind(this);
         getSupportActionBar().hide();
 
-        backgroundManagement = new BackgroundManagement(this);
 //        startService(new Intent(this, AppExitService.class));
 
         tts = new TextToSpeechCustom(this, 0.6f);
@@ -86,15 +77,6 @@ public class StoryOrGame extends AppCompatActivity {
         this.finish();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        backgroundManagement.ActivityOnPause();
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        backgroundManagement.ActivityResumed();
-    }
+
 }

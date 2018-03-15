@@ -18,12 +18,13 @@ import com.example.pefpr.kahaniyonkashehar.R;
 import com.example.pefpr.kahaniyonkashehar.adapters.AttendenceAdapter;
 import com.example.pefpr.kahaniyonkashehar.interfaces.ItemClicked;
 import com.example.pefpr.kahaniyonkashehar.modalclasses.AttendenceView;
+import com.example.pefpr.kahaniyonkashehar.util.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class ContentDisplay extends AppCompatActivity implements ItemClicked {
+public class ContentDisplay extends BaseActivity implements ItemClicked {
 
     private RecyclerView recyclerView;
     private AttendenceAdapter attendenceAdapter;

@@ -7,11 +7,12 @@ import android.util.Log;
 
 import com.example.pefpr.kahaniyonkashehar.R;
 import com.example.pefpr.kahaniyonkashehar.fragments.StoryFragment;
+import com.example.pefpr.kahaniyonkashehar.util.BaseActivity;
 import com.example.pefpr.kahaniyonkashehar.util.PD_Utility;
 
 import static com.example.pefpr.kahaniyonkashehar.fragments.StoryFragment.mp;
 
-public class LevelDecider extends AppCompatActivity {
+public class LevelDecider extends BaseActivity {
 
     public static String StudentID = "12345";
     public static float percentageForStory, percentageForWordRead, percentageForImageRecognition;

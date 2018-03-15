@@ -20,6 +20,7 @@ import com.example.pefpr.kahaniyonkashehar.database.BackupDatabase;
 import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.GroupDBHelper;
 import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.VillageDBHelper;
 import com.example.pefpr.kahaniyonkashehar.modalclasses.Group;
+import com.example.pefpr.kahaniyonkashehar.util.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class UnitForm extends AppCompatActivity {
+public class UnitForm extends BaseActivity {
 
     ArrayAdapter<String> unitFormAdapter;
 

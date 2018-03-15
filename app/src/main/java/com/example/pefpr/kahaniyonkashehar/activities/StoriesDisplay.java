@@ -24,6 +24,7 @@ import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.SessionDBHelper;
 import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.StatusDBHelper;
 import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.StudentDBHelper;
 import com.example.pefpr.kahaniyonkashehar.modalclasses.StoriesView;
+import com.example.pefpr.kahaniyonkashehar.util.BaseActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,7 +37,7 @@ import java.util.List;
 import static com.example.pefpr.kahaniyonkashehar.KksApplication.getLanguage;
 
 
-public class StoriesDisplay extends AppCompatActivity implements StoryClicked {
+public class StoriesDisplay extends BaseActivity implements StoryClicked {
 
     boolean flag = false;
     private RecyclerView recyclerView;

@@ -30,6 +30,7 @@ import com.example.pefpr.kahaniyonkashehar.contentplayer.WebViewActivity;
 import com.example.pefpr.kahaniyonkashehar.interfaces.GameClicked;
 import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.StudentDBHelper;
 import com.example.pefpr.kahaniyonkashehar.modalclasses.ModalGames;
+import com.example.pefpr.kahaniyonkashehar.util.BaseActivity;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -45,7 +46,7 @@ import java.util.List;
 import static com.example.pefpr.kahaniyonkashehar.KksApplication.getLanguage;
 
 
-public class GamesDisplay extends AppCompatActivity implements GameClicked {
+public class GamesDisplay extends BaseActivity implements GameClicked {
 
     private RecyclerView recyclerView;
     private GamesAdapter gamesAdapter;

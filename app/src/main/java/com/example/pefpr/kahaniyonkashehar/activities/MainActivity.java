@@ -32,6 +32,7 @@ import com.example.pefpr.kahaniyonkashehar.fragments.FragmentSplash;
 import com.example.pefpr.kahaniyonkashehar.interfaces.ViewPagerFragmentReloaded;
 import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.StatusDBHelper;
 import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.StudentDBHelper;
+import com.example.pefpr.kahaniyonkashehar.util.BackgroundManagement;
 
 import java.io.IOException;
 
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     FragmentQRScan fragmentQRScan;
     CustomButton customButton;
     ViewPagerAdapter adapter;
-
+    BackgroundManagement backgroundManagement;
 
 
     @Override
@@ -68,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
         //Initializing the tablayout
         tabLayout.setupWithViewPager(viewPager);
         changeTabsFont();
+
+        backgroundManagement = new BackgroundManagement(this);
 
 
 
@@ -141,4 +144,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        backgroundManagement.ActivityOnPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        backgroundManagement.ActivityResumed();
+    }
 }

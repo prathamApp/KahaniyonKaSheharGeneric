@@ -17,6 +17,7 @@ import com.example.pefpr.kahaniyonkashehar.contentplayer.TextToSpeechCustom;
 import com.example.pefpr.kahaniyonkashehar.database.BackupDatabase;
 import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.SessionDBHelper;
 import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.StatusDBHelper;
+import com.example.pefpr.kahaniyonkashehar.util.BackgroundManagement;
 import com.example.pefpr.kahaniyonkashehar.util.SDCardUtil;
 
 import butterknife.BindView;
@@ -29,6 +30,7 @@ public class StoryOrGame extends AppCompatActivity {
     TextToSpeechCustom tts;
     @BindView(R.id.tv_welcomeStudent)
     TextView welcomeStudent;
+    BackgroundManagement backgroundManagement;
     //    @BindView(R.id.btn_story)
 //    ImageButton btn_story;
 //    @BindView(R.id.btn_game)
@@ -43,6 +45,7 @@ public class StoryOrGame extends AppCompatActivity {
         ButterKnife.bind(this);
         getSupportActionBar().hide();
 
+        backgroundManagement = new BackgroundManagement(this);
 //        startService(new Intent(this, AppExitService.class));
 
         tts = new TextToSpeechCustom(this, 0.6f);
@@ -81,5 +84,17 @@ public class StoryOrGame extends AppCompatActivity {
         BackupDatabase.backup(this);
         startActivity(new Intent(this, MainActivity.class));
         this.finish();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        backgroundManagement.ActivityOnPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        backgroundManagement.ActivityResumed();
     }
 }

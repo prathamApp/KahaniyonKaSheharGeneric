@@ -35,11 +35,12 @@ public class SessionDBHelper extends DataBaseHelper {
 
     public boolean UpdateToDate(String SessionID, String toDate) {
         String restrue = "f";
+        sessionDbObject = getWritableDatabase();
         try {
-            Cursor cursor= sessionDbObject.rawQuery("select fromDate from " + TABLENAME + " where SessionID = ? ", new String[]{SessionID});
+            Cursor cursor= sessionDbObject.rawQuery("select toDate from " + TABLENAME + " where SessionID = ? ", new String[]{SessionID});
             cursor.moveToFirst();
 
-            String fromDate = cursor.getString(cursor.getColumnIndex("fromDate"));
+            String fromDate = cursor.getString(cursor.getColumnIndex("toDate"));
             Log.d("fromDate", "UpdateToDate: "+fromDate);
 
             if (fromDate.equalsIgnoreCase("na")) {

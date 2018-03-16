@@ -71,6 +71,27 @@ public class SplashActivity extends BaseActivity implements PermissionResult {
         startApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                File file = new File(Environment.getExternalStorageDirectory().toString() + "/.KKSInternal");
+                if (!file.exists())
+                    file.mkdir();
+
+                file = new File(Environment.getExternalStorageDirectory().toString() + "/.KKSInternal/UsageJsons");
+                if (!file.exists())
+                    file.mkdir();
+
+                file = new File(Environment.getExternalStorageDirectory().toString() + "/.KKSInternal/SelfUsageJsons");
+                if (!file.exists())
+                    file.mkdir();
+
+                file = new File(Environment.getExternalStorageDirectory().toString() + "/.KKSInternal/JsonsBackup");
+                if (!file.exists())
+                    file.mkdir();
+
+                file = new File(Environment.getExternalStorageDirectory().toString() + "/.KKSInternal/Recordings");
+                if (!file.exists())
+                    file.mkdir();
+                
                 BackupDatabase.backup(SplashActivity.this);
                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
             }
@@ -79,6 +100,7 @@ public class SplashActivity extends BaseActivity implements PermissionResult {
         if (!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
             startUpProcess();
         }
+
     }
 
     public String fetchStory(String jasonName) {
@@ -130,33 +152,9 @@ public class SplashActivity extends BaseActivity implements PermissionResult {
         try {
             intiateDatabase();
 
-            File file = new File(Environment.getExternalStorageDirectory().toString() + "/.KKSInternal");
-            if (!file.exists())
-                file.mkdir();
-
-            file = new File(Environment.getExternalStorageDirectory().toString() + "/.KKSInternal/UsageJsons");
-            if (!file.exists())
-                file.mkdir();
-
-            file = new File(Environment.getExternalStorageDirectory().toString() + "/.KKSInternal/SelfUsageJsons");
-            if (!file.exists())
-                file.mkdir();
-
-            file = new File(Environment.getExternalStorageDirectory().toString() + "/.KKSInternal/JsonsBackup");
-            if (!file.exists())
-                file.mkdir();
-
-            file = new File(Environment.getExternalStorageDirectory().toString() + "/.KKSInternal/Recordings");
-            if (!file.exists())
-                file.mkdir();
-            BackupDatabase.backup(SplashActivity.this);
-
             statusDBHelper = new StatusDBHelper(SplashActivity.this);
             String extSdPath = statusDBHelper.getValue("SdCardPath");
             Log.d("extSdPath", "permissionGranted: " + extSdPath);
-            if (new File(extSdPath.toString() + "/.KKSGames").exists()) {
-                startApp.setVisibility(View.VISIBLE);
-            }
 
             String inserted = statusDBHelper.getValue("insertedStudents");
 

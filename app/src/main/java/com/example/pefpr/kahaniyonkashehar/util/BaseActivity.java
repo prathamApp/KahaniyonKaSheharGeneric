@@ -198,6 +198,7 @@ public class BaseActivity extends AppCompatActivity{
                     if(temp)
                         Log.d("APP_END", "onFinish: SUCCESS");
                     BackupDatabase.backup(BaseActivity.this);
+                    finishAffinity();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

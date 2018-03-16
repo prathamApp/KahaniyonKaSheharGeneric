@@ -83,7 +83,9 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".activities.TabUsage"></activity>
+        <activity
+            android:name=".activities.TabUsage"
+            android:screenOrientation="sensorLandscape"/>
     </application>
 
 </manifest>

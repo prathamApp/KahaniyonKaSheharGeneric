@@ -1,6 +1,7 @@
 package com.example.pefpr.kahaniyonkashehar.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
@@ -46,6 +47,7 @@ public class StoryOrGame extends BaseActivity {
         if (StudentName != null) {
             final String ttsString = "Welcome " + StudentName + "!!!";
             welcomeStudent.setText(ttsString);
+            welcomeStudent.setTextColor(Color.parseColor("#fdca00"));
         }
     }
 

@@ -1,5 +1,6 @@
 package com.example.pefpr.kahaniyonkashehar.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -49,6 +50,7 @@ public class StoriesDisplay extends BaseActivity implements StoryClicked {
     public static String storiesDispLang;
 
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

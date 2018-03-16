@@ -1,5 +1,6 @@
 package com.example.pefpr.kahaniyonkashehar.activities;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -124,7 +125,10 @@ public class MainActivity extends BaseActivity {
             // add your code here
             getSupportFragmentManager().popBackStack();
         } else {
-            super.onBackPressed();
+            finishAffinity();
+            Intent intent = new Intent(MainActivity.this, SplashActivity.class);
+            startActivity(intent);
+            this.finish();
         }
     }
 

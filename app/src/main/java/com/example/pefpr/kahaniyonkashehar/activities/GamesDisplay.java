@@ -94,6 +94,7 @@ public class GamesDisplay extends BaseActivity implements GameClicked {
         tv_pg_title = findViewById(R.id.tv_pg_title);
         tv_pg_title.setText("Games");
         tv_pg_title.setTextColor(Color.parseColor("#fdca00"));
+        tv_todaysletters.setTextColor(Color.parseColor("#ffffff"));
 
         tv_todaysletters.setOnClickListener(new View.OnClickListener() {
             @Override

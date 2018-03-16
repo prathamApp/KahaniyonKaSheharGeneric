@@ -31,7 +31,7 @@ public class BaseActivity extends AppCompatActivity{
     static Long timeout = (long) 20000 * 60;
     static Long duration = timeout;
     static Boolean setTimer=false;
-
+    static String pauseTime;
 
     private final int KEY_PERMISSION = 200;
     private PermissionResult permissionResult;
@@ -174,8 +174,9 @@ public class BaseActivity extends AppCompatActivity{
     public void ActivityOnPause() {
 
         setTimer = true;
+        pauseTime = KksApplication.getCurrentDateTime();
         Log.d("APP_END", "onFinish: Startd the App: "+duration);
-        Log.d("APP_END", "onFinish: Startd the App: "+KksApplication.getCurrentDateTime());
+        Log.d("APP_END", "onFinish: Startd the App: "+pauseTime);
 
         cd = new CountDownTimer(duration, 1000) {
             //cd = new CountDownTimer(duration, 1000) {
@@ -194,7 +195,7 @@ public class BaseActivity extends AppCompatActivity{
 
                     String curSession = statusDBHelper.getValue("CurrentSession");
                     Log.d("APP_END", "onFinish: Current Session: "+curSession);
-                    Boolean temp = sessionDBHelper.UpdateToDate("" + curSession, KksApplication.getCurrentDateTime());
+                    Boolean temp = sessionDBHelper.UpdateToDate("" + curSession, pauseTime);
                     if(temp)
                         Log.d("APP_END", "onFinish: SUCCESS");
                     BackupDatabase.backup(BaseActivity.this);

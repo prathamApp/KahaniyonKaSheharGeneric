@@ -123,7 +123,7 @@ public class SplashActivity extends BaseActivity implements PermissionResult {
     @Override
     public void onBackPressed() {
         if (pressCount >= 1) {
-            this.finish();
+            finishAffinity();
         } else {
             Toast.makeText(this, "Exit App", Toast.LENGTH_SHORT).show();
             pressCount++;
@@ -172,6 +172,8 @@ public class SplashActivity extends BaseActivity implements PermissionResult {
 
             String kksLang = fetchStory("Stories");
             Log.d("LanguageJson", "onCreate: " + kksLang);
+            if(kksLang.equalsIgnoreCase("null"))
+                kksLang = "Hindi";
             statusDBHelper.Update("AppLang", kksLang);
             BackupDatabase.backup(SplashActivity.this);
 

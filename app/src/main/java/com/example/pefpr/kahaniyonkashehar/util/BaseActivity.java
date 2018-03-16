@@ -28,7 +28,7 @@ import java.util.List;
 
 public class BaseActivity extends AppCompatActivity{
     static CountDownTimer cd;
-    static Long timeout = (long) 2000 * 60;
+    static Long timeout = (long) 20000 * 60;
     static Long duration = timeout;
     static Boolean setTimer=false;
 

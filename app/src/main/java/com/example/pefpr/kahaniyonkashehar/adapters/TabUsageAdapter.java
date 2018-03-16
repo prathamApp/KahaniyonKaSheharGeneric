@@ -40,11 +40,12 @@ public class TabUsageAdapter extends ArrayAdapter<Usage> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.usage_result_row, parent, false);
         }
         // Lookup view for data population
-        ImageView ivBatch = (ImageView) convertView.findViewById(R.id.resultavatarImg);
+        TextView studentRank = (TextView) convertView.findViewById(R.id.studentRank);
         TextView studentName = (TextView) convertView.findViewById(R.id.studentName);
         TextView usageTime = (TextView) convertView.findViewById(R.id.usageTime);
         // Populate the data into the template view using the data object
-        ivBatch.setImageResource(R.drawable.avatar);
+
+        studentRank.setText("#"+(position+1));
         studentName.setText(usage.studentName);
         usageTime.setText(usage.usageTime);
         // Return the completed view to render on screen

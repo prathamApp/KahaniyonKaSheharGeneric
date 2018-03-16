@@ -91,7 +91,7 @@ public class SplashActivity extends BaseActivity implements PermissionResult {
                 file = new File(Environment.getExternalStorageDirectory().toString() + "/.KKSInternal/Recordings");
                 if (!file.exists())
                     file.mkdir();
-                
+
                 BackupDatabase.backup(SplashActivity.this);
                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
             }

@@ -156,6 +156,13 @@ public class SplashActivity extends BaseActivity implements PermissionResult {
             String extSdPath = statusDBHelper.getValue("SdCardPath");
             Log.d("extSdPath", "permissionGranted: " + extSdPath);
 
+            String insertedStudentsKey = statusDBHelper.getKey("insertedStudents");
+            String appLangKey = statusDBHelper.getKey("AppLang");
+            if(!insertedStudentsKey.equalsIgnoreCase("insertedStudents"))
+                statusDBHelper.insertInitialData("insertedStudents", "N", "");
+            if(!appLangKey.equalsIgnoreCase("AppLang"))
+                statusDBHelper.insertInitialData("AppLang", "NA", "");
+
             String inserted = statusDBHelper.getValue("insertedStudents");
 
             ArrayList<String> sdcard_path = SDCardUtil.getExtSdCardPaths(SplashActivity.this);
@@ -172,7 +179,7 @@ public class SplashActivity extends BaseActivity implements PermissionResult {
 
             String kksLang = fetchStory("Stories");
             Log.d("LanguageJson", "onCreate: " + kksLang);
-            if(kksLang.equalsIgnoreCase("null"))
+            if(kksLang.equalsIgnoreCase("null") || kksLang.equalsIgnoreCase(""))
                 kksLang = "Hindi";
             statusDBHelper.Update("AppLang", kksLang);
             BackupDatabase.backup(SplashActivity.this);

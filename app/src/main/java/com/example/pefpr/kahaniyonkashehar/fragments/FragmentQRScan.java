@@ -41,7 +41,8 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
  * Created by Pravin on 31/01/2018.
  */
 
-public class FragmentQRScan extends Fragment implements ZXingScannerView.ResultHandler, ViewPagerFragmentReloaded {
+public class FragmentQRScan extends Fragment implements ZXingScannerView.ResultHandler,
+        ViewPagerFragmentReloaded {
 
     @BindView(R.id.launch_QR)
     Button launch_QR;

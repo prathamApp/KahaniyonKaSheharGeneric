@@ -104,6 +104,7 @@ public class ScoreDBHelper extends DataBaseHelper {
             scoreDbObject.close();
             return true;
         } catch (Exception ex) {
+            ex.printStackTrace();
             return false;
         }
     }

@@ -33,7 +33,6 @@ public class StatusDBHelper extends DataBaseHelper {
             statusContentValues.put("key", key);
             statusContentValues.put("value", value);
             statusContentValues.put("description",desc);
-
             statusDbObject.replace("Status", null, statusContentValues);
             statusDbObject.close();
         } catch (Exception ex) {
@@ -64,6 +63,18 @@ public class StatusDBHelper extends DataBaseHelper {
             Cursor cursor = statusDbObject.rawQuery("Select value from " + TABLENAME + " where key = '"+key+"'",null);
             cursor.moveToFirst();
             return cursor.getString(cursor.getColumnIndex("value"));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return "";
+        }
+    }
+
+    public String getKey(String key) {
+        try {
+            statusDbObject = getWritableDatabase();
+            Cursor cursor = statusDbObject.rawQuery("Select key from " + TABLENAME + " where key = '"+key+"'",null);
+            cursor.moveToFirst();
+            return cursor.getString(cursor.getColumnIndex("key"));
         } catch (Exception ex) {
             ex.printStackTrace();
             return "";

@@ -120,7 +120,7 @@ public class AdminConsole extends BaseActivity {
     File[] filesForBackup;
     static boolean sentFlag = false;
     boolean currentPush = false;
-    int cnt = 0;
+    int cnt = 0,allFiles=0;
     int [] fileCount;
     private String filename;
 
@@ -193,6 +193,9 @@ public class AdminConsole extends BaseActivity {
 
     public void pushToServer() throws IOException, ExecutionException, InterruptedException {
 
+        cnt=0;
+        allFiles=0;
+
         // Checking Internet Connection
         SyncUtility syncUtility = new SyncUtility(this);
 
@@ -224,11 +227,16 @@ public class AdminConsole extends BaseActivity {
 
                 File[] files = blueToothDir.listFiles();
                 filesForBackup = blueToothDir.listFiles();
-                fileCount = new int[files.length];
+
+                for(int i=0; i<files.length;i++) {
+                    if (files[i].getName().contains(pushFileName))
+                        allFiles++;
+                }
+                        fileCount = new int[files.length];
                 Toast.makeText(this, "Pushing data to server Please wait...", Toast.LENGTH_SHORT).show();
                 for (int i = 0; i < files.length; i++) {
+                  /*  cnt++;*/
                     if (files[i].getName().contains(pushFileName)) {
-                        cnt++;
                         try {
                             startPushing(convertToString(files[i]), syncUtility, i, destFolder);
                         } catch (Exception e) {
@@ -251,8 +259,6 @@ public class AdminConsole extends BaseActivity {
                         }
                     }
                 }, 1000);
-
-                currentPush = false;
             }
         } else {
             Toast.makeText(AdminConsole.this, "Please Connect to the Internet !!!", Toast.LENGTH_SHORT).show();
@@ -517,8 +523,7 @@ public class AdminConsole extends BaseActivity {
                 fOut.close();
 
             } catch (Exception e) {
-            } finally {
-
+                e.printStackTrace();
             }
             if (currentPush) {
                 pushToServer();
@@ -580,32 +585,48 @@ public class AdminConsole extends BaseActivity {
             clearRecordsOrNot();
         } else {
             progress.dismiss();
-            Toast.makeText(getApplicationContext(), "File not found in transferredUsage content", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "File not found in UsageJsons folder", Toast.LENGTH_LONG).show();
         }
     }
 
     private void clearRecordsOrNot() {
+
+        final String dialogTitle, msgQuestion, negativeMsg,positiveMsg,successToast,failedToast;
+
         AlertDialog.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder = new AlertDialog.Builder(AdminConsole.this, android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar_MinWidth);//Theme_Material_Dialog_Alert,Theme_DeviceDefault_Dialog_Alert,Theme_DeviceDefault_Light_DarkActionBar
         } else {
             builder = new AlertDialog.Builder(AdminConsole.this);
         }
-        builder.setTitle(Html.fromHtml("<font color='#2E96BB'>SHARE SUCCESSFUL ?</font>"))
-
-                .setMessage("If you see 'File received successfully' message on master tab,\nClick SHARE SUCCESSFUL.\n\nWARNING : If you click SHARE SUCCESSFUL without receiving\n data on master tab, Data will be LOST !!!")
-
-                .setNegativeButton("SHARE FAILED", new DialogInterface.OnClickListener() {
+        if(currentPush){
+            dialogTitle = "<font color='#2E96BB'>PUSH SUCCESSFUL ?</font>";
+            msgQuestion = "CLEAR RECORDS IF SUCCESSFUL????\n\n If you click on 'PUSH SUCCESSFUL' then Data will be Deleted!!!\n If you click 'PUSH FAILED' the Data will persist";
+            negativeMsg="PUSH FAILED";
+            positiveMsg="PUSH SUCCESSFUL";
+            successToast = "DATA CLEARED";
+            failedToast = "DATA NOT CLEAR ";
+        }
+        else{
+            dialogTitle = "<font color='#2E96BB'>SHARE SUCCESSFUL ?</font>";
+            msgQuestion = "If you see 'File received successfully' message on master tab,\nClick SHARE SUCCESSFUL.\n\nWARNING : If you click SHARE SUCCESSFUL without receiving\n data on master tab, Data will be LOST !!!";
+            negativeMsg="SHARE FAILED";
+            positiveMsg="SHARE SUCCESSFUL";
+            successToast = "File Not Transferred !!!";
+            failedToast = "File Not Transferred !!!";
+        }
+        builder.setTitle(Html.fromHtml(""+dialogTitle))
+                .setMessage(""+msgQuestion)
+                .setNegativeButton(""+negativeMsg, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // do nothing
 /*                        tv.setVisibility(View.VISIBLE);
                         tv.setText("File Not Transferred !!!");*/
-                        Toast.makeText(AdminConsole.this, "File Not Transferred !!!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AdminConsole.this, ""+failedToast, Toast.LENGTH_SHORT).show();
                     }
                 })
 
-
-                .setPositiveButton("SHARE SUCCESSFUL", new DialogInterface.OnClickListener() {
+                .setPositiveButton(""+positiveMsg, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // continue with delete
 /*                        clearDBRecords();
@@ -613,7 +634,7 @@ public class AdminConsole extends BaseActivity {
                         tv.setText("File Transferred Successfully !!!");*/
                         new ScoreDBHelper(AdminConsole.this).DeleteAll();
                         BackupDatabase.backup(AdminConsole.this);
-                        Toast.makeText(AdminConsole.this, "File Transferred Successfully !!!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AdminConsole.this, ""+successToast, Toast.LENGTH_SHORT).show();
                     }
                 })
 
@@ -718,12 +739,17 @@ public class AdminConsole extends BaseActivity {
                 String pushResult = syncUtility.sendData(pushAPI, jasonDataToPush);
                 Log.d("pushResult", pushResult);
                 if (pushResult.equalsIgnoreCase("success")) {
+                    ////// incriment count
+                    cnt++;
                     fileCutPaste(filesForBackup[currentFileNo], folderForBackup);
-                    if(cnt == filesForBackup.length)
+
+
+                    if(cnt == allFiles)
                         sentFlag = true;
                 }
 
             } catch (Exception e) {
+                /*cnt++;*/
                 e.printStackTrace();
                 resp = e.getMessage();
             }
@@ -733,13 +759,17 @@ public class AdminConsole extends BaseActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            if (cnt == filesForBackup.length) {
+            if (cnt == allFiles) {
+                if(currentPush)
+                    clearRecordsOrNot();
+                currentPush = false;
                 progress.dismiss();
+
                 // Show count on screen cnt
                 Toast.makeText(AdminConsole.this, "Data succesfully pushed to the server !!!", Toast.LENGTH_LONG).show();
                 Toast.makeText(AdminConsole.this, "Files moved in pushedUsage folder !!!", Toast.LENGTH_SHORT).show();
 
-            } else if (!sentFlag && (cnt == filesForBackup.length) ) {
+            } else if (!sentFlag && (cnt == allFiles) ) {
                 progress.dismiss();
                 Toast.makeText(AdminConsole.this, "Data NOT pushed to the server !!!", Toast.LENGTH_LONG).show();
             }

@@ -66,7 +66,7 @@ public class FragmentQRScan extends Fragment implements ZXingScannerView.ResultH
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        initCamera();
+            initCamera();
     }
 
     public void initCamera() {

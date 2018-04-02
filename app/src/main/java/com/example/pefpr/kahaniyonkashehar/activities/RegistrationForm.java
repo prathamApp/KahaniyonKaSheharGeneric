@@ -15,7 +15,6 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.pefpr.kahaniyonkashehar.KksApplication;
 import com.example.pefpr.kahaniyonkashehar.R;
 import com.example.pefpr.kahaniyonkashehar.fragments.DatePickerFragment;
@@ -23,11 +22,9 @@ import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.AserDBHelper;
 import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.StudentDBHelper;
 import com.example.pefpr.kahaniyonkashehar.modalclasses.Student;
 import com.example.pefpr.kahaniyonkashehar.util.BaseActivity;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.example.pefpr.kahaniyonkashehar.KksApplication.getCurrentDate;
+import static com.example.pefpr.kahaniyonkashehar.KksApplication.getCurrentDateTime;
 
 public class RegistrationForm extends BaseActivity {
 
@@ -125,7 +122,7 @@ public class RegistrationForm extends BaseActivity {
         getSupportActionBar().hide();
         font = Typeface.createFromAsset(getAssets(), "fonts/tektonpro-bold.otf");
 
-        String currDate = getCurrentDate();
+        String currDate = getCurrentDateTime();
         tv_date.setText("" + currDate);
 
         rb_female.setTypeface(font);

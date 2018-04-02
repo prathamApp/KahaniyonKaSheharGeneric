@@ -23,8 +23,7 @@ import com.example.pefpr.kahaniyonkashehar.modalclasses.Student;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.example.pefpr.kahaniyonkashehar.KksApplication.getCurrentDate;
+import static com.example.pefpr.kahaniyonkashehar.KksApplication.getCurrentDateTime;
 
 /**
  * Created by pefpr on 28/11/2017.
@@ -74,7 +73,7 @@ public class FragmentAddStudent extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
 
-        String currDate = getCurrentDate();
+        String currDate = getCurrentDateTime();
         tv_date.setText("" + currDate);
         font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/tektonpro-bold.otf");
         rb_female.setTypeface(font);

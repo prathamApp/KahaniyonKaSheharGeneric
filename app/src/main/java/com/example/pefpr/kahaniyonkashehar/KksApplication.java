@@ -25,10 +25,12 @@ public class KksApplication extends Application {
     private static final DateFormat dateTimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
     private static final DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
 
+/*
     public static String getCurrentDate() {
         Calendar cal = Calendar.getInstance();
         return dateFormat.format(cal.getTime());
     }
+*/
 
     public static String getCurrentDateTime() {
         Calendar cal = Calendar.getInstance();

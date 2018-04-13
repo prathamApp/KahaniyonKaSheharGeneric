@@ -108,8 +108,6 @@ public class StoriesDisplay extends BaseActivity implements StoryClicked {
                 StoriesView storyListView = new StoriesView("" + sName, "" + sId, sThumbnail, StoryData);
                 StoriesViewList.add(storyListView);
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }

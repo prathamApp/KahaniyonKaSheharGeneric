@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/KahaniyonKaShehar.iml" filepath="$PROJECT_DIR$/KahaniyonKaShehar.iml" />
-      <module fileurl="file://E:/AndroidProjects/KahaniyonKaSheharGeneric/KahaniyonKaShehar.iml" filepath="E:/AndroidProjects/KahaniyonKaSheharGeneric/KahaniyonKaShehar.iml" />
       <module fileurl="file://$PROJECT_DIR$/KahaniyonKaSheharGeneric.iml" filepath="$PROJECT_DIR$/KahaniyonKaSheharGeneric.iml" />
+      <module fileurl="file://G:/KKS_Generic/KahaniyonKaShehar/KahaniyonKaSheharGeneric.iml" filepath="G:/KKS_Generic/KahaniyonKaShehar/KahaniyonKaSheharGeneric.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

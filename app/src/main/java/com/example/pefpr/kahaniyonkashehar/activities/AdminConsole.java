@@ -612,7 +612,7 @@ public class AdminConsole extends BaseActivity {
             msgQuestion = "If you see 'File received successfully' message on master tab,\nClick SHARE SUCCESSFUL.\n\nWARNING : If you click SHARE SUCCESSFUL without receiving\n data on master tab, Data will be LOST !!!";
             negativeMsg="SHARE FAILED";
             positiveMsg="SHARE SUCCESSFUL";
-            successToast = "File Not Transferred !!!";
+            successToast = "File Transferred Successfully!!!";
             failedToast = "File Not Transferred !!!";
         }
         builder.setTitle(Html.fromHtml(""+dialogTitle))

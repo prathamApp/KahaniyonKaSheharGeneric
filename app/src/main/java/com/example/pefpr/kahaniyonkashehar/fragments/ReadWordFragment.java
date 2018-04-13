@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pefpr.kahaniyonkashehar.KksApplication;
 import com.example.pefpr.kahaniyonkashehar.R;
 import com.example.pefpr.kahaniyonkashehar.activities.LevelDecider;
 import com.example.pefpr.kahaniyonkashehar.activities.StoriesDisplay;
@@ -36,6 +37,8 @@ import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.example.pefpr.kahaniyonkashehar.activities.LevelDecider.addStoryScore;
 
 public class ReadWordFragment extends Fragment implements
         RecognitionListener {
@@ -66,7 +69,7 @@ public class ReadWordFragment extends Fragment implements
     Float soundFileWordEnd = 0f, soundFileWordStart = 0f;
 
     SdCardPath ex_path;
-    String sdCardPathString;
+    String sdCardPathString,resQuesId;
 
 
     public ReadWordFragment() {
@@ -102,7 +105,7 @@ public class ReadWordFragment extends Fragment implements
 
         try {
             for (int i = 0; i <= allSories.length(); i++) {
-                String storyId = allSories.getJSONObject(i).getString("nodeId");
+                String storyId = allSories.getJSONObject(i).getString("resourceId");
                 Log.d("NodeID", "LevelDecider: "+LevelDecider.storyId+", Story Id : "+storyId);
                 if(storyId.equalsIgnoreCase(LevelDecider.storyId)) {
                     questions = allSories.getJSONObject(i).getJSONArray("nodelist");
@@ -212,14 +215,13 @@ public class ReadWordFragment extends Fragment implements
 
     public void getQuestion(int currQues) {
         String questionStoryId, questionsList;
-
         try {
             wordQuestion = questions.getJSONObject(integerArray[currQues]).getString("resourceDesc");
             soundFileWordStart = Float.valueOf(questions.getJSONObject(integerArray[currQues]).getString("resourceFrom"));
             soundFileWordEnd = Float.valueOf(questions.getJSONObject(integerArray[currQues]).getString("resourceDuration"));
-
+            resQuesId = questions.getJSONObject(integerArray[currQues]).getString("resourceId");
+            LevelDecider.questionStartDate  = ""+ KksApplication.getCurrentDateTime();
             tvQuesion.setText(wordQuestion);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -281,10 +283,15 @@ public class ReadWordFragment extends Fragment implements
 
     private void checkAnswer(String tex) {
         tvAnswer.setText(tex);
-        if (tex.equalsIgnoreCase(wordQuestion))
+        int scorefromQuestion;
+        if (tex.equalsIgnoreCase(wordQuestion)) {
             tvAnswer.setBackground(getResources().getDrawable(R.drawable.edittext_corner_correct));
-        else
+            scorefromQuestion = 10;
+        }else {
             tvAnswer.setBackground(getResources().getDrawable(R.drawable.edittext_corner_wrong));
+            scorefromQuestion = 0;
+        }
+        addStoryScore(Integer.parseInt(resQuesId), scorefromQuestion);
 
     }
 

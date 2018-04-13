@@ -59,7 +59,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      */
 
     public DataBaseHelper(Context context) {
-        super(context, DB_NAME, null, 21);
+        super(context, DB_NAME, null, 22);
         this.myContext = context;
     }
 
@@ -77,6 +77,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+        db.execSQL("ALTER TABLE Level ADD updatedDate text;");
 
     }
 
@@ -342,6 +344,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 level.StudentID = student.StudentID;
                 level.CurrentLevel = "0.0";
                 level.BaseLevel = "1.2";
+                level.UpdateDate = ""+KksApplication.getCurrentDateTime();
                 levelDBHelper.Add(level, this.getWritableDatabase());
             }
         }

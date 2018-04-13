@@ -74,12 +74,13 @@ public class LevelDBHelper extends DataBaseHelper {
         }
     }
 
-    public boolean updateStudentLevel(String studentID, float level) {
+    public boolean updateStudentLevel(String studentID, float level, String updateDate) {
         try {
             String sLevel = String.valueOf(level);
             //double newLevel = (double) level;
             levelContentValues = new ContentValues();
             levelContentValues.put("CurrentLevel",sLevel);
+            levelContentValues.put("updatedDate",updateDate);
             levelDbObject.update(TABLENAME,levelContentValues,"StudentID='"+studentID+"'",null);
 //            Cursor cursor = levelDbObject.rawQuery("UPDATE " + TABLENAME + " SET CurrentLevel = '" + sLevel + "' WHERE StudentID = '" + studentID +"'",null);
             return true;
@@ -127,6 +128,7 @@ public class LevelDBHelper extends DataBaseHelper {
         levelContentValues.put("StudentID", level.StudentID);
         levelContentValues.put("CurrentLevel", String.valueOf(level.CurrentLevel));
         levelContentValues.put("BaseLevel", String.valueOf(level.BaseLevel));
+        levelContentValues.put("updateDate", String.valueOf(level.UpdateDate));
     }
 
     private Level _PopulateObjectFromCursor(Cursor cursor) {
@@ -139,6 +141,7 @@ public class LevelDBHelper extends DataBaseHelper {
                 level.StudentID = cursor.getString(cursor.getColumnIndex("StudentID"));
                 level.BaseLevel = cursor.getString(cursor.getColumnIndex("BaseLevel"));
                 level.CurrentLevel = cursor.getString((cursor.getColumnIndex("CurrentLevel")));
+                level.UpdateDate = cursor.getString((cursor.getColumnIndex("UpdateDate")));
                 cursor.moveToNext();
             }
             cursor.close();
@@ -161,6 +164,7 @@ public class LevelDBHelper extends DataBaseHelper {
                 level.StudentID = cursor.getString(cursor.getColumnIndex("StudentID"));
                 level.BaseLevel = cursor.getString(cursor.getColumnIndex("BaseLevel"));
                 level.CurrentLevel = cursor.getString((cursor.getColumnIndex("CurrentLevel")));
+                level.UpdateDate = cursor.getString((cursor.getColumnIndex("UpdateDate")));
                 levels.add(level);
                 cursor.moveToNext();
             }

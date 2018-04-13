@@ -1,12 +1,18 @@
 package com.example.pefpr.kahaniyonkashehar.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.example.pefpr.kahaniyonkashehar.KksApplication;
 import com.example.pefpr.kahaniyonkashehar.R;
+import com.example.pefpr.kahaniyonkashehar.database.BackupDatabase;
 import com.example.pefpr.kahaniyonkashehar.fragments.StoryFragment;
+import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.ScoreDBHelper;
+import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.StatusDBHelper;
+import com.example.pefpr.kahaniyonkashehar.modalclasses.Score;
 import com.example.pefpr.kahaniyonkashehar.util.BaseActivity;
 import com.example.pefpr.kahaniyonkashehar.util.PD_Utility;
 
@@ -18,6 +24,8 @@ public class LevelDecider extends BaseActivity {
     public static float percentageForStory, percentageForWordRead, percentageForImageRecognition;
     public static String storyId;
     String storyData;
+    static Context context;
+    public static String questionStartDate;
     Boolean backFlag = false, mediaFlg = false;
 
     @Override
@@ -25,7 +33,7 @@ public class LevelDecider extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level_decider);
         getSupportActionBar().hide();
-
+        context = LevelDecider.this;
         Intent i = this.getIntent();
         storyData = i.getStringExtra("storyData");
         storyId = i.getStringExtra("storyId");
@@ -33,6 +41,37 @@ public class LevelDecider extends BaseActivity {
         Log.d("bbbbb", "storyId " + storyId);
 
         startStory();
+    }
+
+    public static void addStoryScore(int resQuesId, int scorefromQuestion ){
+
+        try {
+            StatusDBHelper statusDBHelper = new StatusDBHelper(context);
+            ScoreDBHelper scoreDBHelper = new ScoreDBHelper(context);
+
+            Score score = new Score();
+
+            score.setSessionID(statusDBHelper.getValue("CurrentSession"));
+            score.setResourceID(storyId);
+            score.setQuestionId(resQuesId);
+            score.setScoredMarks(scorefromQuestion);
+            score.setTotalMarks(10);
+            score.setStudentID(LevelDecider.StudentID);
+
+            score.setStartDateTime(questionStartDate);
+
+            String deviceId = statusDBHelper.getValue("DeviceID");
+            score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
+            score.setEndDateTime(KksApplication.getCurrentDateTime());
+            score.setLevel(1);
+            Boolean _wasSuccessful = scoreDBHelper.Add(score);
+
+            BackupDatabase.backup(context);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void startStory() {

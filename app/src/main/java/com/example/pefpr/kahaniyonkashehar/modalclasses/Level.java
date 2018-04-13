@@ -11,6 +11,7 @@ public class Level {
     public String StudentID;
     public String BaseLevel;
     public String CurrentLevel;
+    public String UpdateDate;
 
     public void setStudentID(String studentID) {
         StudentID = studentID;
@@ -31,7 +32,16 @@ public class Level {
                 "StudentID='" + StudentID + '\'' +
                 ", BaseLevel=" + BaseLevel +
                 ", CurrentLevel=" + CurrentLevel +
+                ", UpdateDate=" + UpdateDate+
                 '}';
+    }
+
+    public String getUpdateDate() {
+        return UpdateDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        UpdateDate = updateDate;
     }
 
     public String getStudentID() {

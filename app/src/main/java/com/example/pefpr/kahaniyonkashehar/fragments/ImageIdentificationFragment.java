@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.badoo.mobile.util.WeakHandler;
+import com.example.pefpr.kahaniyonkashehar.KksApplication;
 import com.example.pefpr.kahaniyonkashehar.R;
 import com.example.pefpr.kahaniyonkashehar.activities.LevelDecider;
 import com.example.pefpr.kahaniyonkashehar.animations.MyBounceInterpolator;
@@ -45,6 +46,8 @@ import java.util.Random;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.pefpr.kahaniyonkashehar.activities.LevelDecider.addStoryScore;
+
 public class ImageIdentificationFragment extends Fragment {
 
     @BindView(R.id.iv_image1)
@@ -68,7 +71,7 @@ public class ImageIdentificationFragment extends Fragment {
     ArrayList<String> resIdArray = new ArrayList<String>();
     WeakHandler handler;
     int readQuestionNo, questionCount = 0, correctCount = 0, consecutiveCount = 0;
-    String ttsQuestion;
+    String ttsQuestion,resQuesId;
     TextToSpeechCustom playTTS;
     MediaPlayer mp;
     LevelDBHelper levelDBHelper;
@@ -228,10 +231,11 @@ public class ImageIdentificationFragment extends Fragment {
 
     private void checkAnswer(int imageViewNum) {
         String imageString = resDescriptionArray.get(imageViewNum - 1);
+        int scorefromQuestion;
 
         if (imageString.equalsIgnoreCase(ttsQuestion)) {
             playMusic("StoriesAudio/correct.mp3");
-
+            scorefromQuestion = 10;
             consecutiveCount++;
             correctCount++;
             if (consecutiveCount >= 3) {
@@ -239,8 +243,11 @@ public class ImageIdentificationFragment extends Fragment {
             }
         } else {
             consecutiveCount = 0;
+            scorefromQuestion = 0;
             playMusic("StoriesAudio/wrong.mp3");
         }
+
+        addStoryScore(Integer.parseInt(resQuesId), scorefromQuestion);
         handler = new WeakHandler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -309,6 +316,8 @@ public class ImageIdentificationFragment extends Fragment {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        LevelDecider.questionStartDate  = ""+ KksApplication.getCurrentDateTime();
+                        resQuesId = resIdArray.get(readQuestionNo);
                         readQuestion(readQuestionNo);
                     }
                 }, 1500);
@@ -352,7 +361,7 @@ public class ImageIdentificationFragment extends Fragment {
         }
         LevelDBHelper levelDBHelper = new LevelDBHelper(getActivity());
         if (levelDBHelper.CheckChildLevelExists(LevelDecider.StudentID)){
-            levelDBHelper.updateStudentLevel(LevelDecider.StudentID, level);
+            levelDBHelper.updateStudentLevel(LevelDecider.StudentID, level,""+KksApplication.getCurrentDateTime());
         }else {
             Level levelObject = new Level();
             levelObject.setStudentID(LevelDecider.StudentID);

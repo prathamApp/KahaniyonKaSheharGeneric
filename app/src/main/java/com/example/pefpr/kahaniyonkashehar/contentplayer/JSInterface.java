@@ -98,7 +98,7 @@ public class JSInterface implements RecognitionListener {
                                 childLevel -= 0.1f;
                             }
                         }
-                        levelDBHelper.updateStudentLevel(WebViewActivity.studentId, childLevel);
+                        levelDBHelper.updateStudentLevel(WebViewActivity.studentId, childLevel,""+KksApplication.getCurrentDateTime());
                     }
                 }
             } else if (perc > 60.0f) {
@@ -116,7 +116,7 @@ public class JSInterface implements RecognitionListener {
                         } else {
                             childLevel += 0.1f;
                         }
-                        levelDBHelper.updateStudentLevel(WebViewActivity.studentId, childLevel);
+                        levelDBHelper.updateStudentLevel(WebViewActivity.studentId, childLevel,""+KksApplication.getCurrentDateTime());
                     }
                 }
             }

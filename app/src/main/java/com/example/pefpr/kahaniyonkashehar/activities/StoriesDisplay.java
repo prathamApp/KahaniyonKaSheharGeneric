@@ -102,7 +102,7 @@ public class StoriesDisplay extends BaseActivity implements StoryClicked {
                 StoriesView storiesView = new StoriesView();
                 String sName, sId, sThumbnail, StoryData;
                 sName = storiesView.storyName = storiesJA.getJSONObject(i).getString("nodeTitle");
-                sId = storiesView.storyId = storiesJA.getJSONObject(i).getString("nodeId");
+                sId = storiesView.storyId = storiesJA.getJSONObject(i).getString("resourceId");
                 sThumbnail = storiesView.storyThumbnail = sdCardPathString + "/StoryData/" + storiesJA.getJSONObject(i).getString("nodeImage");
                 StoryData = storiesJA.getJSONObject(i).getString("nodelist");
                 StoriesView storyListView = new StoriesView("" + sName, "" + sId, sThumbnail, StoryData);

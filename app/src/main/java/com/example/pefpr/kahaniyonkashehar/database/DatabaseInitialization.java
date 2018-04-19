@@ -11,7 +11,7 @@ public final class DatabaseInitialization {
 //    public static final String CreateGroupTable = "CREATE TABLE Groups (GroupID text PRIMARY KEY,GroupCode text, GroupName text, UnitNumber text, DeviceID text, Responsible text, ResponsibleMobile text, VillageID integer, ProgramId integer, CreatedBy text, NewFlag boolean, VillageName text, SchoolName text);";
 //    public static final String CreateVillageTable = "CREATE TABLE Village (VillageID integer PRIMARY KEY, VillageCode text, VillageName text, Block text, District text, State text, CRLID TEXT);";
     public static final String CreateStudentTable = "CREATE TABLE Student (StudentID text PRIMARY KEY, StudentUID text, FirstName text, MiddleName text, LastName text, Gender text, Age int, regDate text, villageName text, NewFlag int, DeviceId text);";
-    public static final String CreateLevelTable = "CREATE TABLE Level ( StudentID text PRIMARY KEY, BaseLevel text , CurrentLevel text);";
+    public static final String CreateLevelTable = "CREATE TABLE Level ( StudentID text PRIMARY KEY, BaseLevel text , CurrentLevel text, UpdatedDate text);";
     public static final String CreateScoreTable = "CREATE TABLE Scores (SessionID TEXT NOT NULL, StudentID TEXT, DeviceID TEXT NOT NULL, ResourceID text NOT NULL, QuestionID INTEGER NOT NULL, ScoredMarks integer NOT NULL, TotalMarks integer NOT NULL, StartDateTime TEXT NOT NULL, EndDateTime TEXT, Level INTEGER DEFAULT 1);";
     public static final String CreateSessionTable = "CREATE TABLE Session(SessionID TEXT PRIMARY KEY NOT NULL, fromDate text, toDate text);";
     public static final String CreateAttendanceTable = "CREATE TABLE Attendance(SessionID TEXT NOT NULL, StudentID text)";

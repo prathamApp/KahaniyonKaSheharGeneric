@@ -152,6 +152,8 @@ public class StoriesDisplay extends BaseActivity implements StoryClicked {
 
             String curSession = statusDBHelper.getValue("CurrentSession");
             sessionDBHelper.UpdateToDate(""+curSession, KksApplication.getCurrentDateTime());
+            String curStrSession = statusDBHelper.getValue("CurrentStorySession");
+            sessionDBHelper.UpdateToDate(""+curStrSession, KksApplication.getCurrentDateTime());
             BackupDatabase.backup(this);
             startActivity(new Intent(this, MainActivity.class));
             this.finish();

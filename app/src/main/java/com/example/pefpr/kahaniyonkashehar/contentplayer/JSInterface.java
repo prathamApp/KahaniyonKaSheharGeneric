@@ -105,7 +105,7 @@ public class JSInterface implements RecognitionListener {
                 if (childLevel < gameLevel) {
                     //Increase Child level
                     if (childLevel < max) {
-                        if ((perc > 90.0f) && (childLevel < (max - 0.4))) {
+                        if ((perc > 90.0f) && (childLevel < (max - 0.4f))) {
                             childLevel = Float.valueOf(String.valueOf(childLevel).split("\\.")[0]) + 1.1f;
                         } else if (perc < 90.0f) {
                             if (String.valueOf(childLevel).split("\\.")[1].equalsIgnoreCase("4")) {

@@ -35,7 +35,7 @@ public class LevelDBHelper extends DataBaseHelper {
             return cursor.getString(cursor.getColumnIndex("CurrentLevel"));
         } catch (Exception ex) {
             ex.printStackTrace();
-            return null;
+            return "0.0";
         }
     }
 
@@ -79,10 +79,13 @@ public class LevelDBHelper extends DataBaseHelper {
             String sLevel = String.valueOf(level);
             //double newLevel = (double) level;
             levelContentValues = new ContentValues();
+            levelContentValues.put("StudentID",studentID);
             levelContentValues.put("CurrentLevel",sLevel);
-            levelContentValues.put("updatedDate",updateDate);
-            levelDbObject.update(TABLENAME,levelContentValues,"StudentID='"+studentID+"'",null);
-//            Cursor cursor = levelDbObject.rawQuery("UPDATE " + TABLENAME + " SET CurrentLevel = '" + sLevel + "' WHERE StudentID = '" + studentID +"'",null);
+            levelContentValues.put("BaseLevel","1.2");
+            levelContentValues.put("UpdatedDate",updateDate);
+            levelDbObject.replace(TABLENAME, null, levelContentValues);
+            //String query = "UPDATE " + TABLENAME + " SET CurrentLevel = '" + level + "' , BaseLevel= '" + 1.2 + "', updatedDate= '" + updateDate + "' WHERE StudentID = '" + studentID +"'";
+            //Cursor cursor = levelDbObject.rawQuery(""+query,null);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -128,7 +131,7 @@ public class LevelDBHelper extends DataBaseHelper {
         levelContentValues.put("StudentID", level.StudentID);
         levelContentValues.put("CurrentLevel", String.valueOf(level.CurrentLevel));
         levelContentValues.put("BaseLevel", String.valueOf(level.BaseLevel));
-        levelContentValues.put("updateDate", String.valueOf(level.UpdateDate));
+        levelContentValues.put("UpdatedDate", String.valueOf(level.UpdatedDate));
     }
 
     private Level _PopulateObjectFromCursor(Cursor cursor) {
@@ -141,7 +144,7 @@ public class LevelDBHelper extends DataBaseHelper {
                 level.StudentID = cursor.getString(cursor.getColumnIndex("StudentID"));
                 level.BaseLevel = cursor.getString(cursor.getColumnIndex("BaseLevel"));
                 level.CurrentLevel = cursor.getString((cursor.getColumnIndex("CurrentLevel")));
-                level.UpdateDate = cursor.getString((cursor.getColumnIndex("UpdateDate")));
+                level.UpdatedDate = cursor.getString((cursor.getColumnIndex("UpdatedDate")));
                 cursor.moveToNext();
             }
             cursor.close();
@@ -164,7 +167,7 @@ public class LevelDBHelper extends DataBaseHelper {
                 level.StudentID = cursor.getString(cursor.getColumnIndex("StudentID"));
                 level.BaseLevel = cursor.getString(cursor.getColumnIndex("BaseLevel"));
                 level.CurrentLevel = cursor.getString((cursor.getColumnIndex("CurrentLevel")));
-                level.UpdateDate = cursor.getString((cursor.getColumnIndex("UpdateDate")));
+                level.UpdatedDate = cursor.getString((cursor.getColumnIndex("UpdatedDate")));
                 levels.add(level);
                 cursor.moveToNext();
             }

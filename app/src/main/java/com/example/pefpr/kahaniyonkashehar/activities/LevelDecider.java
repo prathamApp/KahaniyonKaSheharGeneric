@@ -3,7 +3,6 @@ package com.example.pefpr.kahaniyonkashehar.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.example.pefpr.kahaniyonkashehar.KksApplication;
@@ -11,6 +10,7 @@ import com.example.pefpr.kahaniyonkashehar.R;
 import com.example.pefpr.kahaniyonkashehar.database.BackupDatabase;
 import com.example.pefpr.kahaniyonkashehar.fragments.StoryFragment;
 import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.ScoreDBHelper;
+import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.SessionDBHelper;
 import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.StatusDBHelper;
 import com.example.pefpr.kahaniyonkashehar.modalclasses.Score;
 import com.example.pefpr.kahaniyonkashehar.util.BaseActivity;
@@ -25,8 +25,10 @@ public class LevelDecider extends BaseActivity {
     public static String storyId;
     String storyData;
     static Context context;
-    public static String questionStartDate;
+    public static String questionStartDate, currentStorySession;
     Boolean backFlag = false, mediaFlg = false;
+    StatusDBHelper stsDBHelper;
+    SessionDBHelper sesDBHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +41,19 @@ public class LevelDecider extends BaseActivity {
         storyId = i.getStringExtra("storyId");
         StudentID = i.getStringExtra("StudentID");
         Log.d("bbbbb", "storyId " + storyId);
+        stsDBHelper = new StatusDBHelper(context);
+        sesDBHelper = new SessionDBHelper(context);
 
+        String sessionID = KksApplication.getUniqueID().toString();
+        currentStorySession = storyId+"_SS_"+sessionID+"_CS_"+ stsDBHelper.getValue("CurrentSession");
+
+        stsDBHelper.Update("CurrentStorySession", "" + currentStorySession);
+        sesDBHelper.addToSessionTable(currentStorySession,KksApplication.getCurrentDateTime(),"NA");
+        BackupDatabase.backup(this);
         startStory();
     }
 
-    public static void addStoryScore(int resQuesId, int scorefromQuestion ){
+    public static void addStoryScore(int resQuesId, int scorefromQuestion) {
 
         try {
             StatusDBHelper statusDBHelper = new StatusDBHelper(context);
@@ -107,7 +117,9 @@ public class LevelDecider extends BaseActivity {
                 mediaFlg = true;
             }
 
-        }catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -117,6 +129,12 @@ public class LevelDecider extends BaseActivity {
         if (mp != null && mp.isPlaying()) {
             mp.stop();
         }
+        StatusDBHelper statusDBHelper = new StatusDBHelper(this);
+        SessionDBHelper sessionDBHelper = new SessionDBHelper(this);
+        String curStrSession = statusDBHelper.getValue("CurrentStorySession");
+        sessionDBHelper.UpdateToDate(""+curStrSession, KksApplication.getCurrentDateTime());
+        BackupDatabase.backup(this);
+
 
         /*StoryFragment myStoryFragment = (StoryFragment) getSupportFragmentManager().findFragmentByTag(StoryFragment.class.getSimpleName());
 

@@ -567,6 +567,11 @@ public class StoryFragment extends Fragment {
                             if (storyFinishFlag) {
                                 readingFinishFlag = true;
                                 iv_question.setVisibility(View.VISIBLE);
+                                StatusDBHelper statusDBHelper = new StatusDBHelper(getActivity());
+                                SessionDBHelper sessionDBHelper = new SessionDBHelper(getActivity());
+                                String curStrSession = statusDBHelper.getValue("CurrentStorySession");
+                                sessionDBHelper.UpdateToDate(""+curStrSession, KksApplication.getCurrentDateTime());
+                                BackupDatabase.backup(getActivity());
                                 getQuestion(quesNo);
                             }
                         }

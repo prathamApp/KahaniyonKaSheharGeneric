@@ -367,6 +367,7 @@ public class ImageIdentificationFragment extends Fragment {
             levelObject.setStudentID(LevelDecider.StudentID);
             levelObject.setCurrentLevel(String.valueOf(level));
             levelObject.setBaseLevel("1.2");
+            levelObject.setUpdatedDate(""+KksApplication.getCurrentDateTime());
             levelDBHelper.Add(levelObject, levelDBHelper.getWritableDatabase());
         }
 

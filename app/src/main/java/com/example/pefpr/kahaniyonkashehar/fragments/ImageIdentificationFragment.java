@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -79,12 +80,13 @@ public class ImageIdentificationFragment extends Fragment {
     float speechRate = 1.0f;
     SdCardPath ex_path;
     String sdCardPathString,language;
+    Resources resources;
 
     public ImageIdentificationFragment() {
     }
 
     private static int getRandomNumber(int min, int max) {
-        return min + (new Random().nextInt(max));
+        return (new Random().nextInt(max + 1 - min) + min);
     }
 
     private static int[] getUniqueRandomNumber(int min, int max, int numSize) {
@@ -125,7 +127,7 @@ public class ImageIdentificationFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        final Resources resources = getResources();
+        resources = getResources();
         playTTS = new TextToSpeechCustom(getActivity(), 1.0f);
         language = getLanguage();
         if(!(language.equalsIgnoreCase("hindi")))
@@ -134,64 +136,9 @@ public class ImageIdentificationFragment extends Fragment {
         ex_path = new SdCardPath(getActivity());
         sdCardPathString = ex_path.getSdCardPath();
 
-
-        btn_repeat_question_i.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                readQuestion(readQuestionNo);
-            }
-        });
-
-        iv_image1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Animation pop = AnimationUtils.loadAnimation(getActivity(), R.anim.popup);
-                MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 10);
-                pop.setInterpolator(interpolator);
-                iv_image1.startAnimation(pop);
-                checkAnswer(1);
-            }
-        });
-
-        iv_image2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Animation pop = AnimationUtils.loadAnimation(getActivity(), R.anim.popup);
-                MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 10);
-                pop.setInterpolator(interpolator);
-                iv_image2.startAnimation(pop);
-                checkAnswer(2);
-            }
-        });
-
-        iv_image3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Animation pop = AnimationUtils.loadAnimation(getActivity(), R.anim.popup);
-                MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 10);
-                pop.setInterpolator(interpolator);
-                iv_image3.startAnimation(pop);
-                checkAnswer(3);
-            }
-        });
-
-        iv_image4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Animation pop = AnimationUtils.loadAnimation(getActivity(), R.anim.popup);
-                MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 10);
-                pop.setInterpolator(interpolator);
-                iv_image4.startAnimation(pop);
-                checkAnswer(4);
-            }
-        });
-
         questionData = fetchStory("ImageIdentification");
         integerArray = getUniqueRandomNumber(0, questionData.length(), 4);
         ShowImages(integerArray);
-
         psbStar.setAdapter(new SimplePhasedAdapter(resources, new int[]{
                 R.drawable.btn_star5_selector,
                 R.drawable.btn_star4_selector,
@@ -226,6 +173,14 @@ public class ImageIdentificationFragment extends Fragment {
                 Log.d("STT_Position", "onPositionSelected: " + position);
             }
         });
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setListeners();
+            }
+        },1600);
 
     }
 
@@ -277,7 +232,7 @@ public class ImageIdentificationFragment extends Fragment {
     private void ShowImages(int[] integerArray) {
         try {
             questionCount++;
-            if (nextFlag || questionCount == 9) {
+            if (nextFlag || questionCount > 9) {
                 if (nextFlag)
                     LevelDecider.percentageForImageRecognition = 100f;
                 else
@@ -289,7 +244,7 @@ public class ImageIdentificationFragment extends Fragment {
                 PD_Utility.showFragment(getActivity(), new CharacterDialogFragment(), R.id.ll_leveldecider,
                         null, CharacterDialogFragment.class.getSimpleName());
             } else {
-                readQuestionNo = getRandomNumber(0, 4);
+                readQuestionNo = getRandomNumber(0, 3);
                 String imagePath = sdCardPathString + "/StoryData/";
 
                 resDescriptionArray.clear();
@@ -317,14 +272,71 @@ public class ImageIdentificationFragment extends Fragment {
                     @Override
                     public void run() {
                         LevelDecider.questionStartDate  = ""+ KksApplication.getCurrentDateTime();
+                        Log.d("readQuestionNo", "run: "+readQuestionNo);
                         resQuesId = resIdArray.get(readQuestionNo);
                         readQuestion(readQuestionNo);
+                        Log.d("resQuesId", " run: "+resQuesId);
                     }
                 }, 1500);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void setListeners() {
+        iv_image1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Animation pop = AnimationUtils.loadAnimation(getActivity(), R.anim.popup);
+                MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 10);
+                pop.setInterpolator(interpolator);
+                iv_image1.startAnimation(pop);
+                checkAnswer(1);
+            }
+        });
+
+        iv_image2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Animation pop = AnimationUtils.loadAnimation(getActivity(), R.anim.popup);
+                MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 10);
+                pop.setInterpolator(interpolator);
+                iv_image2.startAnimation(pop);
+                checkAnswer(2);
+            }
+        });
+
+        iv_image3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Animation pop = AnimationUtils.loadAnimation(getActivity(), R.anim.popup);
+                MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 10);
+                pop.setInterpolator(interpolator);
+                iv_image3.startAnimation(pop);
+                checkAnswer(3);
+            }
+        });
+
+        iv_image4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Animation pop = AnimationUtils.loadAnimation(getActivity(), R.anim.popup);
+                MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 10);
+                pop.setInterpolator(interpolator);
+                iv_image4.startAnimation(pop);
+                checkAnswer(4);
+            }
+        });
+
+        btn_repeat_question_i.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                readQuestion(readQuestionNo);
+            }
+        });
     }
 
     private String getLanguage() {

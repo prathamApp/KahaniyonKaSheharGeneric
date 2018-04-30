@@ -32,7 +32,7 @@ public class Level {
                 "StudentID='" + StudentID + '\'' +
                 ", BaseLevel=" + BaseLevel +
                 ", CurrentLevel=" + CurrentLevel +
-                ", UpdateDate=" + UpdatedDate+
+                ", UpdatedDate=" + UpdatedDate+
                 '}';
     }
 

@@ -78,7 +78,6 @@ public class AdminConsole extends BaseActivity {
     @BindView(R.id.btn_ac_submitunit)
     Button btn_ac_submitunit;
 
-
     @BindView(R.id.btn_add_admin)
     ImageButton btn_addAdmin;
     @BindView(R.id.btn_transfer_data)
@@ -131,7 +130,6 @@ public class AdminConsole extends BaseActivity {
         getSupportActionBar().hide();
         ButterKnife.bind(this);
 
-        transferFileName = "KKSUsage-";
         pushFileName = "KKSUsage-";
         pushAPI = "http://www.story.openiscool.org/api/kahaniya/pushdata";
 //        pushAPI = "http://www.hlearning.openiscool.org/api/datapush/pushusage";
@@ -152,7 +150,7 @@ public class AdminConsole extends BaseActivity {
             public void onClick(View v) {
                 ll_admin_menu.setVisibility(View.GONE);
                 ll_admin_addnew.setVisibility(View.VISIBLE);
-                adminFlag = true;
+                    adminFlag = true;
             }
         });
 
@@ -455,6 +453,7 @@ public class AdminConsole extends BaseActivity {
                             levelObj.put("StudentID", levelList.get(i).getStudentID());
                             levelObj.put("BaseLevel", levelList.get(i).getBaseLevel());
                             levelObj.put("CurrentLevel", levelList.get(i).getCurrentLevel());
+                            levelObj.put("UpdatedDate", levelList.get(i).getUpdatedDate());
                             levelData.put(levelObj);
                         }
                     }
@@ -477,7 +476,7 @@ public class AdminConsole extends BaseActivity {
                             ", \"newCrlsData\": " + crlData +
                             ", \"levelsData\": " + levelData +
                             ", \"sessionsData\": " + sessionData + "}";
-                    transferFileName = transferFileName + KksApplication.getUniqueID().toString();
+                    transferFileName = "KKSUsage-" + KksApplication.getUniqueID().toString();
                     WriteSettings(this, requestString, transferFileName);
                 }
             }
@@ -620,21 +619,26 @@ public class AdminConsole extends BaseActivity {
                 .setNegativeButton(""+negativeMsg, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // do nothing
-/*                        tv.setVisibility(View.VISIBLE);
-                        tv.setText("File Not Transferred !!!");*/
                         Toast.makeText(AdminConsole.this, ""+failedToast, Toast.LENGTH_SHORT).show();
+                        //Delete
+                        if(!currentPush){
+                            File f = new File(Environment.getExternalStorageDirectory() + "/.KKSInternal/UsageJsons/" + transferFileName+ ".json");
+                            f.delete();
+                        }
                     }
                 })
 
                 .setPositiveButton(""+positiveMsg, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // continue with delete
-/*                        clearDBRecords();
-                        tv.setVisibility(View.VISIBLE);
-                        tv.setText("File Transferred Successfully !!!");*/
                         new ScoreDBHelper(AdminConsole.this).DeleteAll();
                         BackupDatabase.backup(AdminConsole.this);
                         Toast.makeText(AdminConsole.this, ""+successToast, Toast.LENGTH_SHORT).show();
+                        if(!currentPush){
+                            File f = new File(Environment.getExternalStorageDirectory() + "/.KKSInternal/UsageJsons/" + transferFileName+ ".json");
+                            String destFolder = Environment.getExternalStorageDirectory() + "/.KKSInternal/JsonsBackup";
+                            fileCutPaste(f,destFolder);
+                        }
                     }
                 })
 

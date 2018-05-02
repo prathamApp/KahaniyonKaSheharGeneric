@@ -98,14 +98,14 @@ public class JSInterface implements RecognitionListener {
                                 childLevel -= 0.1f;
                             }
                         }
-                        levelDBHelper.updateStudentLevel(WebViewActivity.studentId, childLevel);
+                        levelDBHelper.updateStudentLevel(WebViewActivity.studentId, childLevel,""+KksApplication.getCurrentDateTime());
                     }
                 }
             } else if (perc > 60.0f) {
                 if (childLevel < gameLevel) {
                     //Increase Child level
                     if (childLevel < max) {
-                        if ((perc > 90.0f) && (childLevel < (max - 0.4))) {
+                        if ((perc > 90.0f) && (childLevel < (max - 0.4f))) {
                             childLevel = Float.valueOf(String.valueOf(childLevel).split("\\.")[0]) + 1.1f;
                         } else if (perc < 90.0f) {
                             if (String.valueOf(childLevel).split("\\.")[1].equalsIgnoreCase("4")) {
@@ -116,7 +116,7 @@ public class JSInterface implements RecognitionListener {
                         } else {
                             childLevel += 0.1f;
                         }
-                        levelDBHelper.updateStudentLevel(WebViewActivity.studentId, childLevel);
+                        levelDBHelper.updateStudentLevel(WebViewActivity.studentId, childLevel,""+KksApplication.getCurrentDateTime());
                     }
                 }
             }

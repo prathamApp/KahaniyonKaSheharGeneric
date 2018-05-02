@@ -26,12 +26,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.badoo.mobile.util.WeakHandler;
+import com.example.pefpr.kahaniyonkashehar.KksApplication;
 import com.example.pefpr.kahaniyonkashehar.R;
 import com.example.pefpr.kahaniyonkashehar.activities.GamesDisplay;
+import com.example.pefpr.kahaniyonkashehar.activities.LevelDecider;
 import com.example.pefpr.kahaniyonkashehar.animations.MyBounceInterpolator;
 import com.example.pefpr.kahaniyonkashehar.contentplayer.SdCardPath;
 import com.example.pefpr.kahaniyonkashehar.contentplayer.TextToSpeechCustom;
+import com.example.pefpr.kahaniyonkashehar.contentplayer.WebViewActivity;
+import com.example.pefpr.kahaniyonkashehar.database.BackupDatabase;
+import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.ScoreDBHelper;
+import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.SessionDBHelper;
 import com.example.pefpr.kahaniyonkashehar.modalDBHelpers.StatusDBHelper;
+import com.example.pefpr.kahaniyonkashehar.modalclasses.Score;
 import com.example.pefpr.kahaniyonkashehar.util.PD_Utility;
 import com.nex3z.flowlayout.FlowLayout;
 
@@ -49,6 +56,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.pefpr.kahaniyonkashehar.activities.LevelDecider.addStoryScore;
 import static com.example.pefpr.kahaniyonkashehar.activities.LevelDecider.percentageForStory;
 
 public class StoryFragment extends Fragment {
@@ -83,7 +91,7 @@ public class StoryFragment extends Fragment {
     List<String> pageImageList = new ArrayList<String>();
     int questionCounter = 0, answerCounter = 0, randomQuestionNumber;
     public static WeakHandler handler, soundStopHandler, colorChangeHandler;
-    String storyData, storyAudio, storyBg, storyId, wordQuestion;
+    String storyData, storyAudio, storyBg, storyId, wordQuestion,resQuesId;
     boolean nextFlag = false, mediaPauseFlag = false, storyFinishFlag = false, readingFinishFlag = false;
     Float pageDuration = 0f, stopPlayBack = 0f, startPlayBack = 0f;
     Float soundFileWordEnd = 0f, soundFileWordStart = 0f;
@@ -96,7 +104,6 @@ public class StoryFragment extends Fragment {
     int correctAnswers = 0;
 
     public StoryFragment() {
-        // Required empty public constructor
         textToSpeechCustom = new TextToSpeechCustom(getActivity(), 0.4f);
     }
 
@@ -111,7 +118,6 @@ public class StoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the fragment_image_identification for this fragment
         storyData = getArguments().getString("storyData", "");
         storyId = getArguments().getString("storyId", "");
         return inflater.inflate(R.layout.fragment_story, container, false);
@@ -122,7 +128,6 @@ public class StoryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         textToSpeechCustom = new TextToSpeechCustom(getActivity(), 0.4f);
-
         ex_path = new SdCardPath(getActivity());
         currentPage = 0;
         sdCardPathString = ex_path.getSdCardPath();
@@ -137,19 +142,6 @@ public class StoryFragment extends Fragment {
             storyFragLang = "guj";
         } else
             storyFragLang = "NA";
-
-       /* btn_nextpage.setVisibility(View.GONE);
-        btn_previouspage.setVisibility(View.GONE);
-
-        WeakHandler startHandler = new WeakHandler();
-        startHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                btn_nextpage.setVisibility(View.VISIBLE);
-                btn_previouspage.setVisibility(View.VISIBLE);
-            }
-        }, 1500);*/
-
 
         storyData = getArguments().getString("storyData");
         storyId = getArguments().getString("storyId");
@@ -174,22 +166,6 @@ public class StoryFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-/*        iv_btn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (readingFinishFlag && questionCounter < 2) {
-                    handler = new WeakHandler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            questionCounter++;
-                            playQuestionAudio();
-                        }
-                    }, 1000);
-                }
-            }
-        });*/
 
         btn_nextpage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -268,14 +244,13 @@ public class StoryFragment extends Fragment {
                 }
             }
         });
-
     }
 
     public void generateRandomQuestions() {
         String questionStoryId;
         try {
             for (int i = 0; i < questions.length(); i++) {
-                questionStoryId = questions.getJSONObject(i).getString("nodeId");
+                questionStoryId = questions.getJSONObject(i).getString("resourceId");
                 if (questionStoryId.equalsIgnoreCase(storyId)) {
                     questionPagesArray = questions.getJSONObject(i).getJSONArray("nodelist");
                     break;
@@ -480,8 +455,10 @@ public class StoryFragment extends Fragment {
     public void checkAnswer(final String clickedText, final TextView clickedTextView) {
         Log.d("wordddd", "checkAnswer:" + wordQuestion + "----- clickedText:" + clickedText);
         questionCounter++;
+        int scorefromQuestion;
         if (wordQuestion.equalsIgnoreCase(clickedText)) {
             playMusic("StoriesAudio/correct.mp3");
+            scorefromQuestion = 10;
             clickedTextView.setTextColor(Color.GREEN);
             correctAnswers++;
             correctAnswerCount++;
@@ -490,6 +467,7 @@ public class StoryFragment extends Fragment {
             }
         } else {
             playMusic("StoriesAudio/wrong.mp3");
+            scorefromQuestion = 0;
             clickedTextView.setTextColor(Color.RED);
             colorChangeHandler = new WeakHandler();
             colorChangeHandler.postDelayed(new Runnable() {
@@ -503,6 +481,7 @@ public class StoryFragment extends Fragment {
             }, 500);
             correctAnswerCount = 0;
         }
+        addStoryScore(Integer.parseInt(resQuesId), scorefromQuestion);
         colorChangeHandler = new WeakHandler();
         colorChangeHandler.postDelayed(new Runnable() {
             @Override
@@ -588,6 +567,11 @@ public class StoryFragment extends Fragment {
                             if (storyFinishFlag) {
                                 readingFinishFlag = true;
                                 iv_question.setVisibility(View.VISIBLE);
+                                StatusDBHelper statusDBHelper = new StatusDBHelper(getActivity());
+                                SessionDBHelper sessionDBHelper = new SessionDBHelper(getActivity());
+                                String curStrSession = statusDBHelper.getValue("CurrentStorySession");
+                                sessionDBHelper.UpdateToDate(""+curStrSession, KksApplication.getCurrentDateTime());
+                                BackupDatabase.backup(getActivity());
                                 getQuestion(quesNo);
                             }
                         }
@@ -620,9 +604,12 @@ public class StoryFragment extends Fragment {
             wordQuestion = questionsArray.getJSONObject(quesarr[0]).getString("resourceDesc");
             soundFileWordStart = Float.valueOf(questionsArray.getJSONObject(quesarr[0]).getString("resourceFrom"));
             soundFileWordEnd = Float.valueOf(questionsArray.getJSONObject(quesarr[0]).getString("resourceDuration"));
+            resQuesId = questionsArray.getJSONObject(quesarr[0]).getString("resourceId");
 
-            Log.d("wordddd", "getQuestion: " + wordQuestion);
+            Log.d("wordddd", "getQuestion : " + wordQuestion );
+            Log.d("wordddd", "resQuesIdc : " + resQuesId );
             quesNo++;
+            LevelDecider.questionStartDate  = ""+KksApplication.getCurrentDateTime();
             playQuestionAudio();
 
         } catch (Exception e) {
@@ -637,13 +624,6 @@ public class StoryFragment extends Fragment {
                     textToSpeechCustom.ttsFunction("कहानी में इन् शब्दों को ढूंढो!", "hin", 0.6f);
                     Thread.sleep(4000);
                     textToSpeechCustom.ttsFunction(wordQuestion, "hin", 0.7f);
-                /*    WeakHandler startHandler = new WeakHandler();
-                    startHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            textToSpeechCustom.ttsFunction(wordQuestion, "hin", 0.7f);
-                        }
-                    }, 4000);*/
                 } else {
                     textToSpeechCustom.ttsFunction(wordQuestion, "hin", 0.6f);
                 }
@@ -688,13 +668,6 @@ public class StoryFragment extends Fragment {
                     Thread.sleep((long) (soundFileWordEnd * 1000));
                     mp.stop();
                 }
-                /*WeakHandler startHandler = new WeakHandler();
-                startHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mp.stop();
-                    }
-                }, (long) (soundFileWordEnd * 1000));*/
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -716,18 +689,4 @@ public class StoryFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
-/*    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        try {
-            handler.removeCallbacksAndMessages(null);
-            soundStopHandler.removeCallbacksAndMessages(null);
-            if (mp.isPlaying()) {
-                mp.stop();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
 }

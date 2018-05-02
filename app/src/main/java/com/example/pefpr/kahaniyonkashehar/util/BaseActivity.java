@@ -194,8 +194,10 @@ public class BaseActivity extends AppCompatActivity{
                     SessionDBHelper sessionDBHelper = new SessionDBHelper(BaseActivity.this);
 
                     String curSession = statusDBHelper.getValue("CurrentSession");
+                    String curStrSession = statusDBHelper.getValue("CurrentStorySession");
                     Log.d("APP_END", "onFinish: Current Session: "+curSession);
                     Boolean temp = sessionDBHelper.UpdateToDate("" + curSession, pauseTime);
+                    Boolean temp2 = sessionDBHelper.UpdateToDate("" + curStrSession, pauseTime);
                     if(temp)
                         Log.d("APP_END", "onFinish: SUCCESS");
                     BackupDatabase.backup(BaseActivity.this);

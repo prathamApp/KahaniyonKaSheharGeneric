@@ -27,7 +27,9 @@ public class AppExitService extends Service {
             SessionDBHelper sessionDBHelper = new SessionDBHelper(this);
 
             String curSession = statusDBHelper.getValue("CurrentSession");
+            String curStrSession = statusDBHelper.getValue("CurrentStorySession");
             sessionDBHelper.UpdateToDate(""+curSession, KksApplication.getCurrentDateTime());
+            sessionDBHelper.UpdateToDate(""+curStrSession, KksApplication.getCurrentDateTime());
             BackupDatabase.backup(this);
             Log.d("AppExitService:", "onTaskRemoved: HAHAHAHAHAHAHAHAHAAHAHAAAAAA");
             stopSelf();

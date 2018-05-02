@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.badoo.mobile.util.WeakHandler;
+import com.example.pefpr.kahaniyonkashehar.KksApplication;
 import com.example.pefpr.kahaniyonkashehar.R;
 import com.example.pefpr.kahaniyonkashehar.activities.LevelDecider;
 import com.example.pefpr.kahaniyonkashehar.animations.MyBounceInterpolator;
@@ -45,6 +47,8 @@ import java.util.Random;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.pefpr.kahaniyonkashehar.activities.LevelDecider.addStoryScore;
+
 public class ImageIdentificationFragment extends Fragment {
 
     @BindView(R.id.iv_image1)
@@ -68,7 +72,7 @@ public class ImageIdentificationFragment extends Fragment {
     ArrayList<String> resIdArray = new ArrayList<String>();
     WeakHandler handler;
     int readQuestionNo, questionCount = 0, correctCount = 0, consecutiveCount = 0;
-    String ttsQuestion;
+    String ttsQuestion,resQuesId;
     TextToSpeechCustom playTTS;
     MediaPlayer mp;
     LevelDBHelper levelDBHelper;
@@ -76,12 +80,13 @@ public class ImageIdentificationFragment extends Fragment {
     float speechRate = 1.0f;
     SdCardPath ex_path;
     String sdCardPathString,language;
+    Resources resources;
 
     public ImageIdentificationFragment() {
     }
 
     private static int getRandomNumber(int min, int max) {
-        return min + (new Random().nextInt(max));
+        return (new Random().nextInt(max + 1 - min) + min);
     }
 
     private static int[] getUniqueRandomNumber(int min, int max, int numSize) {
@@ -122,7 +127,7 @@ public class ImageIdentificationFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        final Resources resources = getResources();
+        resources = getResources();
         playTTS = new TextToSpeechCustom(getActivity(), 1.0f);
         language = getLanguage();
         if(!(language.equalsIgnoreCase("hindi")))
@@ -131,14 +136,155 @@ public class ImageIdentificationFragment extends Fragment {
         ex_path = new SdCardPath(getActivity());
         sdCardPathString = ex_path.getSdCardPath();
 
+        questionData = fetchStory("ImageIdentification");
+        integerArray = getUniqueRandomNumber(0, questionData.length(), 4);
+        ShowImages(integerArray);
+        psbStar.setAdapter(new SimplePhasedAdapter(resources, new int[]{
+                R.drawable.btn_star5_selector,
+                R.drawable.btn_star4_selector,
+                R.drawable.btn_star3_selector,
+                R.drawable.btn_star2_selector,
+                R.drawable.btn_star1_selector}));
 
-        btn_repeat_question_i.setOnClickListener(new View.OnClickListener() {
+        psbStar.setListener(new PhasedListener() {
             @Override
-            public void onClick(View v) {
-                readQuestion(readQuestionNo);
+            public void onPositionSelected(int position) {
+
+                switch (position) {
+                    case 0:
+                        speechRate = 1.5f;
+                        break;
+                    case 1:
+                        speechRate = 1.0f;
+                        break;
+                    case 2:
+                        speechRate = 0.8f;
+                        break;
+                    case 3:
+                        speechRate = 0.5f;
+                        break;
+                    case 4:
+                        speechRate = 0.1f;
+                        break;
+                    default:
+                        speechRate = 1.0f;
+                }
+                btn_repeat_question_i.performClick();
+                Log.d("STT_Position", "onPositionSelected: " + position);
             }
         });
 
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setListeners();
+            }
+        },1600);
+
+    }
+
+    private void checkAnswer(int imageViewNum) {
+        String imageString = resDescriptionArray.get(imageViewNum - 1);
+        int scorefromQuestion;
+
+        if (imageString.equalsIgnoreCase(ttsQuestion)) {
+            playMusic("StoriesAudio/correct.mp3");
+            scorefromQuestion = 10;
+            consecutiveCount++;
+            correctCount++;
+            if (consecutiveCount >= 3) {
+                nextFlag = true;
+            }
+        } else {
+            consecutiveCount = 0;
+            scorefromQuestion = 0;
+            playMusic("StoriesAudio/wrong.mp3");
+        }
+
+        addStoryScore(Integer.parseInt(resQuesId), scorefromQuestion);
+        handler = new WeakHandler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                integerArray = getUniqueRandomNumber(0, questionData.length(), 4);
+                ShowImages(integerArray);
+            }
+        }, 1000);
+    }
+
+    void playMusic(String fileName) {
+        try {
+            mp = new MediaPlayer();
+            mp.setDataSource(sdCardPathString + "/StoryData/" + fileName);
+            mp.prepare();
+            mp.start();
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                public void onCompletion(MediaPlayer mp) {
+                    mp.stop();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void ShowImages(int[] integerArray) {
+        try {
+            questionCount++;
+            if (nextFlag || questionCount > 9) {
+                if (nextFlag)
+                    LevelDecider.percentageForImageRecognition = 100f;
+                else
+                    LevelDecider.percentageForImageRecognition = (((float) correctCount / 9) * 100);
+
+//                Toast.makeText(getActivity(), "Level Percengtage" + LevelDecider.percentageForImageRecognition, Toast.LENGTH_SHORT).show();
+
+                updateStudentLevel();
+                PD_Utility.showFragment(getActivity(), new CharacterDialogFragment(), R.id.ll_leveldecider,
+                        null, CharacterDialogFragment.class.getSimpleName());
+            } else {
+                readQuestionNo = getRandomNumber(0, 3);
+                String imagePath = sdCardPathString + "/StoryData/";
+
+                resDescriptionArray.clear();
+                resIdArray.clear();
+                resImageArray.clear();
+                resAudioArray.clear();
+
+                for (int i = 0; i < 4; i++) {
+                    resDescriptionArray.add(questionData.getJSONObject(integerArray[i]).getString("resourceDesc"));
+                    resImageArray.add("IdentificationImages/" + questionData.getJSONObject(integerArray[i]).getString("resourceBg"));
+                    resAudioArray.add(questionData.getJSONObject(integerArray[i]).getString("resourceAudio"));
+                    resIdArray.add(questionData.getJSONObject(integerArray[i]).getString("resourceId"));
+                }
+                Bitmap[] bitmap = {BitmapFactory.decodeFile(imagePath + resImageArray.get(0))};
+                iv_image1.setImageBitmap(bitmap[0]);
+                bitmap = new Bitmap[]{BitmapFactory.decodeFile(imagePath + resImageArray.get(1))};
+                iv_image2.setImageBitmap(bitmap[0]);
+                bitmap = new Bitmap[]{BitmapFactory.decodeFile(imagePath + resImageArray.get(2))};
+                iv_image3.setImageBitmap(bitmap[0]);
+                bitmap = new Bitmap[]{BitmapFactory.decodeFile(imagePath + resImageArray.get(3))};
+                iv_image4.setImageBitmap(bitmap[0]);
+
+                handler = new WeakHandler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        LevelDecider.questionStartDate  = ""+ KksApplication.getCurrentDateTime();
+                        Log.d("readQuestionNo", "run: "+readQuestionNo);
+                        resQuesId = resIdArray.get(readQuestionNo);
+                        readQuestion(readQuestionNo);
+                        Log.d("resQuesId", " run: "+resQuesId);
+                    }
+                }, 1500);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setListeners() {
         iv_image1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,137 +331,12 @@ public class ImageIdentificationFragment extends Fragment {
             }
         });
 
-        questionData = fetchStory("ImageIdentification");
-        integerArray = getUniqueRandomNumber(0, questionData.length(), 4);
-        ShowImages(integerArray);
-
-        psbStar.setAdapter(new SimplePhasedAdapter(resources, new int[]{
-                R.drawable.btn_star5_selector,
-                R.drawable.btn_star4_selector,
-                R.drawable.btn_star3_selector,
-                R.drawable.btn_star2_selector,
-                R.drawable.btn_star1_selector}));
-
-        psbStar.setListener(new PhasedListener() {
+        btn_repeat_question_i.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onPositionSelected(int position) {
-
-                switch (position) {
-                    case 0:
-                        speechRate = 1.5f;
-                        break;
-                    case 1:
-                        speechRate = 1.0f;
-                        break;
-                    case 2:
-                        speechRate = 0.8f;
-                        break;
-                    case 3:
-                        speechRate = 0.5f;
-                        break;
-                    case 4:
-                        speechRate = 0.1f;
-                        break;
-                    default:
-                        speechRate = 1.0f;
-                }
-                btn_repeat_question_i.performClick();
-                Log.d("STT_Position", "onPositionSelected: " + position);
+            public void onClick(View v) {
+                readQuestion(readQuestionNo);
             }
         });
-
-    }
-
-    private void checkAnswer(int imageViewNum) {
-        String imageString = resDescriptionArray.get(imageViewNum - 1);
-
-        if (imageString.equalsIgnoreCase(ttsQuestion)) {
-            playMusic("StoriesAudio/correct.mp3");
-
-            consecutiveCount++;
-            correctCount++;
-            if (consecutiveCount >= 3) {
-                nextFlag = true;
-            }
-        } else {
-            consecutiveCount = 0;
-            playMusic("StoriesAudio/wrong.mp3");
-        }
-        handler = new WeakHandler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                integerArray = getUniqueRandomNumber(0, questionData.length(), 4);
-                ShowImages(integerArray);
-            }
-        }, 1000);
-    }
-
-    void playMusic(String fileName) {
-        try {
-            mp = new MediaPlayer();
-            mp.setDataSource(sdCardPathString + "/StoryData/" + fileName);
-            mp.prepare();
-            mp.start();
-            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                public void onCompletion(MediaPlayer mp) {
-                    mp.stop();
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void ShowImages(int[] integerArray) {
-        try {
-            questionCount++;
-            if (nextFlag || questionCount == 9) {
-                if (nextFlag)
-                    LevelDecider.percentageForImageRecognition = 100f;
-                else
-                    LevelDecider.percentageForImageRecognition = (((float) correctCount / 9) * 100);
-
-//                Toast.makeText(getActivity(), "Level Percengtage" + LevelDecider.percentageForImageRecognition, Toast.LENGTH_SHORT).show();
-
-                updateStudentLevel();
-                PD_Utility.showFragment(getActivity(), new CharacterDialogFragment(), R.id.ll_leveldecider,
-                        null, CharacterDialogFragment.class.getSimpleName());
-            } else {
-                readQuestionNo = getRandomNumber(0, 4);
-                String imagePath = sdCardPathString + "/StoryData/";
-
-                resDescriptionArray.clear();
-                resIdArray.clear();
-                resImageArray.clear();
-                resAudioArray.clear();
-
-                for (int i = 0; i < 4; i++) {
-                    resDescriptionArray.add(questionData.getJSONObject(integerArray[i]).getString("resourceDesc"));
-                    resImageArray.add("IdentificationImages/" + questionData.getJSONObject(integerArray[i]).getString("resourceBg"));
-                    resAudioArray.add(questionData.getJSONObject(integerArray[i]).getString("resourceAudio"));
-                    resIdArray.add(questionData.getJSONObject(integerArray[i]).getString("resourceId"));
-                }
-                Bitmap[] bitmap = {BitmapFactory.decodeFile(imagePath + resImageArray.get(0))};
-                iv_image1.setImageBitmap(bitmap[0]);
-                bitmap = new Bitmap[]{BitmapFactory.decodeFile(imagePath + resImageArray.get(1))};
-                iv_image2.setImageBitmap(bitmap[0]);
-                bitmap = new Bitmap[]{BitmapFactory.decodeFile(imagePath + resImageArray.get(2))};
-                iv_image3.setImageBitmap(bitmap[0]);
-                bitmap = new Bitmap[]{BitmapFactory.decodeFile(imagePath + resImageArray.get(3))};
-                iv_image4.setImageBitmap(bitmap[0]);
-
-                handler = new WeakHandler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        readQuestion(readQuestionNo);
-                    }
-                }, 1500);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private String getLanguage() {
@@ -352,12 +373,13 @@ public class ImageIdentificationFragment extends Fragment {
         }
         LevelDBHelper levelDBHelper = new LevelDBHelper(getActivity());
         if (levelDBHelper.CheckChildLevelExists(LevelDecider.StudentID)){
-            levelDBHelper.updateStudentLevel(LevelDecider.StudentID, level);
+            levelDBHelper.updateStudentLevel(LevelDecider.StudentID, level,""+KksApplication.getCurrentDateTime());
         }else {
             Level levelObject = new Level();
             levelObject.setStudentID(LevelDecider.StudentID);
             levelObject.setCurrentLevel(String.valueOf(level));
             levelObject.setBaseLevel("1.2");
+            levelObject.setUpdatedDate(""+KksApplication.getCurrentDateTime());
             levelDBHelper.Add(levelObject, levelDBHelper.getWritableDatabase());
         }
 

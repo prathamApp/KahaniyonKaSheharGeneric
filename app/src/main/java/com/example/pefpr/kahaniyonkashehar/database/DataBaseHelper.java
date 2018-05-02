@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 
@@ -59,7 +60,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      */
 
     public DataBaseHelper(Context context) {
-        super(context, DB_NAME, null, 21);
+        super(context, DB_NAME, null, 22);
         this.myContext = context;
     }
 
@@ -77,6 +78,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+        db.execSQL("ALTER TABLE Level ADD UpdatedDate text;");
 
     }
 
@@ -105,6 +108,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         if (!dbExist) {
             if (new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/PrathamKKSTabDB.db").exists()) {
                 copyDataBase();
+                Handler h = new Handler();
+                h.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        new StatusDBHelper(myContext).insertInitialData("CurrentStorySession", "", "");
+                    }
+                }, 5000);
             } else {
                 try {
                     createDB();
@@ -129,6 +139,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 statusDBHelper.insertInitialData("SdCardPath", "NA", "");
                 statusDBHelper.insertInitialData("AppLang", "NA", "");
                 statusDBHelper.insertInitialData("insertedStudents", "N", "");
+                statusDBHelper.insertInitialData("CurrentStorySession", "", "");
 
                 CrlDBHelper crlDBHelper;
                 crlDBHelper = new CrlDBHelper(myContext);
@@ -342,6 +353,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 level.StudentID = student.StudentID;
                 level.CurrentLevel = "0.0";
                 level.BaseLevel = "1.2";
+                level.UpdatedDate = ""+KksApplication.getCurrentDateTime();
                 levelDBHelper.Add(level, this.getWritableDatabase());
             }
         }

@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -119,8 +118,8 @@ public class AdminConsole extends BaseActivity {
     File[] filesForBackup;
     static boolean sentFlag = false;
     boolean currentPush = false;
-    int cnt = 0,allFiles=0;
-    int [] fileCount;
+    int cnt = 0, allFiles = 0;
+    int[] fileCount;
     private String filename;
 
     @Override
@@ -150,7 +149,7 @@ public class AdminConsole extends BaseActivity {
             public void onClick(View v) {
                 ll_admin_menu.setVisibility(View.GONE);
                 ll_admin_addnew.setVisibility(View.VISIBLE);
-                    adminFlag = true;
+                adminFlag = true;
             }
         });
 
@@ -191,8 +190,8 @@ public class AdminConsole extends BaseActivity {
 
     public void pushToServer() throws IOException, ExecutionException, InterruptedException {
 
-        cnt=0;
-        allFiles=0;
+        cnt = 0;
+        allFiles = 0;
 
         // Checking Internet Connection
         SyncUtility syncUtility = new SyncUtility(this);
@@ -226,14 +225,14 @@ public class AdminConsole extends BaseActivity {
                 File[] files = blueToothDir.listFiles();
                 filesForBackup = blueToothDir.listFiles();
 
-                for(int i=0; i<files.length;i++) {
+                for (int i = 0; i < files.length; i++) {
                     if (files[i].getName().contains(pushFileName))
                         allFiles++;
                 }
-                        fileCount = new int[files.length];
+                fileCount = new int[files.length];
                 Toast.makeText(this, "Pushing data to server Please wait...", Toast.LENGTH_SHORT).show();
                 for (int i = 0; i < files.length; i++) {
-                  /*  cnt++;*/
+                    /*  cnt++;*/
                     if (files[i].getName().contains(pushFileName)) {
                         try {
                             startPushing(convertToString(files[i]), syncUtility, i, destFolder);
@@ -590,7 +589,7 @@ public class AdminConsole extends BaseActivity {
 
     private void clearRecordsOrNot() {
 
-        final String dialogTitle, msgQuestion, negativeMsg,positiveMsg,successToast,failedToast;
+        final String dialogTitle, msgQuestion, negativeMsg, positiveMsg, successToast, failedToast;
 
         AlertDialog.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -598,46 +597,45 @@ public class AdminConsole extends BaseActivity {
         } else {
             builder = new AlertDialog.Builder(AdminConsole.this);
         }
-        if(currentPush){
+        if (currentPush) {
             dialogTitle = "<font color='#2E96BB'>PUSH SUCCESSFUL ?</font>";
             msgQuestion = "CLEAR RECORDS IF SUCCESSFUL????\n\n If you click on 'PUSH SUCCESSFUL' then Data will be Deleted!!!\n If you click 'PUSH FAILED' the Data will persist";
-            negativeMsg="PUSH FAILED";
-            positiveMsg="PUSH SUCCESSFUL";
+            negativeMsg = "PUSH FAILED";
+            positiveMsg = "PUSH SUCCESSFUL";
             successToast = "DATA CLEARED";
             failedToast = "DATA NOT CLEAR ";
-        }
-        else{
+        } else {
             dialogTitle = "<font color='#2E96BB'>SHARE SUCCESSFUL ?</font>";
             msgQuestion = "If you see 'File received successfully' message on master tab,\nClick SHARE SUCCESSFUL.\n\nWARNING : If you click SHARE SUCCESSFUL without receiving\n data on master tab, Data will be LOST !!!";
-            negativeMsg="SHARE FAILED";
-            positiveMsg="SHARE SUCCESSFUL";
+            negativeMsg = "SHARE FAILED";
+            positiveMsg = "SHARE SUCCESSFUL";
             successToast = "File Transferred Successfully!!!";
             failedToast = "File Not Transferred !!!";
         }
-        builder.setTitle(Html.fromHtml(""+dialogTitle))
-                .setMessage(""+msgQuestion)
-                .setNegativeButton(""+negativeMsg, new DialogInterface.OnClickListener() {
+        builder.setTitle(Html.fromHtml("" + dialogTitle))
+                .setMessage("" + msgQuestion)
+                .setNegativeButton("" + negativeMsg, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // do nothing
-                        Toast.makeText(AdminConsole.this, ""+failedToast, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AdminConsole.this, "" + failedToast, Toast.LENGTH_SHORT).show();
                         //Delete
-                        if(!currentPush){
-                            File f = new File(Environment.getExternalStorageDirectory() + "/.KKSInternal/UsageJsons/" + transferFileName+ ".json");
+                        if (!currentPush) {
+                            File f = new File(Environment.getExternalStorageDirectory() + "/.KKSInternal/UsageJsons/" + transferFileName + ".json");
                             f.delete();
                         }
                     }
                 })
 
-                .setPositiveButton(""+positiveMsg, new DialogInterface.OnClickListener() {
+                .setPositiveButton("" + positiveMsg, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // continue with delete
                         new ScoreDBHelper(AdminConsole.this).DeleteAll();
                         BackupDatabase.backup(AdminConsole.this);
-                        Toast.makeText(AdminConsole.this, ""+successToast, Toast.LENGTH_SHORT).show();
-                        if(!currentPush){
-                            File f = new File(Environment.getExternalStorageDirectory() + "/.KKSInternal/UsageJsons/" + transferFileName+ ".json");
+                        Toast.makeText(AdminConsole.this, "" + successToast, Toast.LENGTH_SHORT).show();
+                        if (!currentPush) {
+                            File f = new File(Environment.getExternalStorageDirectory() + "/.KKSInternal/UsageJsons/" + transferFileName + ".json");
                             String destFolder = Environment.getExternalStorageDirectory() + "/.KKSInternal/JsonsBackup";
-                            fileCutPaste(f,destFolder);
+                            fileCutPaste(f, destFolder);
                         }
                     }
                 })
@@ -748,7 +746,7 @@ public class AdminConsole extends BaseActivity {
                     fileCutPaste(filesForBackup[currentFileNo], folderForBackup);
 
 
-                    if(cnt == allFiles)
+                    if (cnt == allFiles)
                         sentFlag = true;
                 }
 
@@ -764,7 +762,7 @@ public class AdminConsole extends BaseActivity {
         @Override
         protected void onPostExecute(String result) {
             if (cnt == allFiles) {
-                if(currentPush)
+                if (currentPush)
                     clearRecordsOrNot();
                 currentPush = false;
                 progress.dismiss();
@@ -773,7 +771,7 @@ public class AdminConsole extends BaseActivity {
                 Toast.makeText(AdminConsole.this, "Data succesfully pushed to the server !!!", Toast.LENGTH_LONG).show();
                 Toast.makeText(AdminConsole.this, "Files moved in pushedUsage folder !!!", Toast.LENGTH_SHORT).show();
 
-            } else if (!sentFlag && (cnt == allFiles) ) {
+            } else if (!sentFlag && (cnt == allFiles)) {
                 progress.dismiss();
                 Toast.makeText(AdminConsole.this, "Data NOT pushed to the server !!!", Toast.LENGTH_LONG).show();
             }
